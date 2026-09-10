@@ -161,7 +161,7 @@ nav.querySelectorAll(".nav__link").forEach((link) => {
 // --------------------------------------------------------------------------
 const accordionEl = document.getElementById("servicesAccordion");
 
-let openZone = "manos";
+let openZone = null;
 let activeCategory = null;
 
 function parsePrice(priceStr) {
