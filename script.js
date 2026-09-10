@@ -9,27 +9,27 @@ const ZONE_META = [
   {
     key: "manos",
     label: "Manos",
-    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26V14a2.5 2.5 0 0 1 5 0v8"/><path d="M19 22v-9a2.5 2.5 0 0 1 5 0v9"/><path d="M24 22v-8a2.5 2.5 0 0 1 5 0v9"/><path d="M29 23v-5a2.5 2.5 0 0 1 5 0v13c0 6-4 10-10 10h-2c-5 0-7-2-9-6l-4-8a2.3 2.3 0 0 1 4-2.2l3 4.2"/></svg>'
+    icon: '<svg class="accordion-header__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26V14a2.5 2.5 0 0 1 5 0v8"/><path d="M19 22v-9a2.5 2.5 0 0 1 5 0v9"/><path d="M24 22v-8a2.5 2.5 0 0 1 5 0v9"/><path d="M29 23v-5a2.5 2.5 0 0 1 5 0v13c0 6-4 10-10 10h-2c-5 0-7-2-9-6l-4-8a2.3 2.3 0 0 1 4-2.2l3 4.2"/></svg>'
   },
   {
     key: "pies",
     label: "Pies",
-    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 40c-3 0-5-2-5-5 0-4 2-6 2-11 0-5-2-7-2-11a7 7 0 0 1 14 0c0 3-1 5-1 8 0 4 2 5 4 8 2 3 3 5 3 8a3 3 0 0 1-3 3z"/><circle cx="16" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="20" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="24" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="27" cy="10" r="1.3" fill="currentColor" stroke="none"/></svg>'
+    icon: '<svg class="accordion-header__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 40c-3 0-5-2-5-5 0-4 2-6 2-11 0-5-2-7-2-11a7 7 0 0 1 14 0c0 3-1 5-1 8 0 4 2 5 4 8 2 3 3 5 3 8a3 3 0 0 1-3 3z"/><circle cx="16" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="20" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="24" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="27" cy="10" r="1.3" fill="currentColor" stroke="none"/></svg>'
   },
   {
     key: "cejasPestanas",
     label: "Cejas y pestañas",
-    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 25c5-8 13-12 18-12s13 4 18 12c-5 8-13 12-18 12S11 33 6 25z"/><circle cx="24" cy="25" r="4.5"/><path d="M30 14l2-4M35 17l3-3M38 22l4-2"/></svg>'
+    icon: '<svg class="accordion-header__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 25c5-8 13-12 18-12s13 4 18 12c-5 8-13 12-18 12S11 33 6 25z"/><circle cx="24" cy="25" r="4.5"/><path d="M30 14l2-4M35 17l3-3M38 22l4-2"/></svg>'
   },
   {
     key: "rostro",
     label: "Rostro",
-    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="15"/><circle cx="18" cy="21" r="1.5" fill="currentColor" stroke="none"/><circle cx="30" cy="21" r="1.5" fill="currentColor" stroke="none"/><path d="M17 30c2 3 5 4.5 7 4.5s5-1.5 7-4.5"/></svg>'
+    icon: '<svg class="accordion-header__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="15"/><circle cx="18" cy="21" r="1.5" fill="currentColor" stroke="none"/><circle cx="30" cy="21" r="1.5" fill="currentColor" stroke="none"/><path d="M17 30c2 3 5 4.5 7 4.5s5-1.5 7-4.5"/></svg>'
   },
   {
     key: "cuerpo",
     label: "Cuerpo",
-    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="10" r="5"/><path d="M14 40l3-14a7 7 0 0 1 14 0l3 14"/><path d="M17 26h14"/></svg>'
+    icon: '<svg class="accordion-header__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="10" r="5"/><path d="M14 40l3-14a7 7 0 0 1 14 0l3 14"/><path d="M17 26h14"/></svg>'
   }
 ];
 
@@ -157,93 +157,130 @@ nav.querySelectorAll(".nav__link").forEach((link) => {
 });
 
 // --------------------------------------------------------------------------
-// Zonas de servicios (tarjetas), filtros (chips) y grid
+// Acordeón de servicios (cabecera por zona + filas de servicio)
 // --------------------------------------------------------------------------
-const zoneCardsEl = document.getElementById("zoneCards");
-const activeZoneLabelEl = document.getElementById("activeZoneLabel");
-const serviceFiltersEl = document.getElementById("serviceFilters");
-const servicesGrid = document.getElementById("servicesGrid");
+const accordionEl = document.getElementById("servicesAccordion");
 
-let activeZone = "manos";
+let openZone = "manos";
 let activeCategory = "Todos";
 
-function renderZoneCards() {
-  zoneCardsEl.innerHTML = ZONE_META.map((zone) => `
-    <button type="button" class="zone-card${zone.key === activeZone ? " is-active" : ""}" data-zone="${zone.key}">
-      ${zone.icon}
-      <span class="zone-card__label">${zone.label}</span>
-    </button>
-  `).join("");
+function parsePrice(priceStr) {
+  const match = priceStr.replace(",", ".").match(/(\d+(\.\d+)?)/);
+  return match ? parseFloat(match[1]) : null;
 }
 
-function renderChips() {
-  if (activeZone !== "manos") {
-    serviceFiltersEl.hidden = true;
-    serviceFiltersEl.innerHTML = "";
-    return;
-  }
-
-  serviceFiltersEl.hidden = false;
-  serviceFiltersEl.innerHTML = MANOS_CATEGORIES.map((category) => `
-    <button type="button" class="chip${category === activeCategory ? " is-active" : ""}" data-category="${category}">${category}</button>
-  `).join("");
+function formatPrice(value) {
+  return Number.isInteger(value) ? `${value}€` : `${value.toFixed(2).replace(".", ",")}€`;
 }
 
-function renderServices() {
-  const items = SERVICES[activeZone].filter((item) => {
-    if (activeZone !== "manos" || activeCategory === "Todos") return true;
+function zoneMinPrice(zoneKey) {
+  const values = SERVICES[zoneKey].map((item) => parsePrice(item.price)).filter((n) => n !== null);
+  if (values.length === 0) return null;
+  return formatPrice(Math.min(...values));
+}
+
+function renderRows(zoneKey) {
+  const items = SERVICES[zoneKey].filter((item) => {
+    if (zoneKey !== "manos" || activeCategory === "Todos") return true;
     return item.category === activeCategory;
   });
 
-  servicesGrid.innerHTML = "";
   let lastGroup = null;
+  let html = "";
 
   items.forEach((item) => {
     if (item.group && item.group !== lastGroup) {
-      const groupTitle = document.createElement("h3");
-      groupTitle.className = "services__group-title";
-      groupTitle.textContent = item.group;
-      servicesGrid.appendChild(groupTitle);
+      html += `<h3 class="services__group-title">${item.group}</h3>`;
       lastGroup = item.group;
     }
 
-    const card = document.createElement("article");
-    card.className = "service-card";
-    card.innerHTML = `
-      <h3>${item.name}</h3>
-      <div class="service-card__meta">${item.price} · ${item.duration}</div>
+    html += `
+      <div class="service-row">
+        <span class="service-row__name">${item.name}</span>
+        <span class="service-row__meta">
+          <span class="service-row__price">${item.price}</span>
+          <span class="service-row__duration">${item.duration}</span>
+        </span>
+      </div>
     `;
-    servicesGrid.appendChild(card);
   });
+
+  return html;
 }
 
-function renderActiveZonePanel() {
-  activeZoneLabelEl.textContent = ZONE_LABELS[activeZone];
-  renderChips();
-  renderServices();
+function renderRowsInto(zoneKey) {
+  const rowsEl = document.getElementById(`rows-${zoneKey}`);
+  if (rowsEl) rowsEl.innerHTML = renderRows(zoneKey);
 }
 
-zoneCardsEl.addEventListener("click", (event) => {
-  const button = event.target.closest(".zone-card");
-  if (!button) return;
+function renderAccordion() {
+  accordionEl.innerHTML = ZONE_META.map((zone, index) => {
+    const isOpen = zone.key === openZone;
+    const count = SERVICES[zone.key].length;
+    const fromPrice = zoneMinPrice(zone.key);
 
-  activeZone = button.dataset.zone;
-  activeCategory = "Todos";
-  renderZoneCards();
-  renderActiveZonePanel();
-});
+    const chipsMarkup = zone.key === "manos"
+      ? `<div class="chips" id="chips-manos">
+          ${MANOS_CATEGORIES.map((category) => `
+            <button type="button" class="chip${category === activeCategory ? " is-active" : ""}" data-category="${category}">${category}</button>
+          `).join("")}
+        </div>`
+      : "";
 
-serviceFiltersEl.addEventListener("click", (event) => {
+    const item = `
+      <div class="accordion-item${isOpen ? " is-open" : ""}" data-zone="${zone.key}">
+        <button type="button" class="accordion-header" aria-expanded="${isOpen}">
+          <span class="accordion-header__left">
+            ${zone.icon}
+            <span class="accordion-header__title">${zone.label} <span class="accordion-header__count">(${count})</span></span>
+          </span>
+          <span class="accordion-header__right">
+            ${fromPrice ? `<span class="accordion-header__from">Desde ${fromPrice}</span>` : ""}
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel__inner">
+            ${chipsMarkup}
+            <div id="rows-${zone.key}">${renderRows(zone.key)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const separator = index < ZONE_META.length - 1 ? `<div class="accordion-separator" aria-hidden="true">◆</div>` : "";
+    return item + separator;
+  }).join("");
+}
+
+accordionEl.addEventListener("click", (event) => {
   const chip = event.target.closest(".chip");
-  if (!chip) return;
+  if (chip) {
+    activeCategory = chip.dataset.category;
+    chip.parentElement.querySelectorAll(".chip").forEach((c) => c.classList.toggle("is-active", c === chip));
+    renderRowsInto("manos");
+    return;
+  }
 
-  activeCategory = chip.dataset.category;
-  renderChips();
-  renderServices();
+  const header = event.target.closest(".accordion-header");
+  if (!header) return;
+
+  const item = header.closest(".accordion-item");
+  const zoneKey = item.dataset.zone;
+  const willOpen = openZone !== zoneKey;
+
+  openZone = willOpen ? zoneKey : null;
+
+  accordionEl.querySelectorAll(".accordion-item").forEach((el) => {
+    const isOpen = el.dataset.zone === openZone;
+    el.classList.toggle("is-open", isOpen);
+    el.querySelector(".accordion-header").setAttribute("aria-expanded", isOpen);
+  });
 });
 
-renderZoneCards();
-renderActiveZonePanel();
+renderAccordion();
 
 // --------------------------------------------------------------------------
 // Selects del formulario (servicio agrupado por zona + empleada)
