@@ -228,8 +228,8 @@ img { max-width: 100%; display: block; }
   text-align: center;
   overflow: hidden;
   padding-bottom: clamp(56px, 9vh, 100px);
-  /* Fallback en tonos mármol/dorado-rosado mientras no está la foto real;
-     en cuanto exista assets/img/hero-marmol.png esta capa queda cubierta. */
+  /* Fallback en tonos mármol/dorado-rosado por si assets/img/hero-marmol.jpg
+     no llegara a cargar (conexión lenta, archivo movido, etc.). */
   background:
     radial-gradient(circle at 30% 20%, rgba(184, 147, 95, 0.22), transparent 55%),
     radial-gradient(circle at 75% 70%, rgba(217, 149, 138, 0.22), transparent 55%),
@@ -239,19 +239,20 @@ img { max-width: 100%; display: block; }
 .hero__bg {
   position: absolute;
   inset: 0;
-  /* IMG: sustituir/añadir la foto real del cliente en assets/img/hero-marmol.png
-     (mármol rosa con diamante hueco). Comprimir a WebP/JPEg optimizado
-     (~150-250KB) para que cargue rápido en móvil. */
-  background-image: url('assets/img/hero-marmol.png');
+  /* IMG: foto real del cliente (mármol rosa con diamante hueco), optimizada
+     a JPEG ~1600px de ancho / ~120KB para carga rápida en móvil. */
+  background-image: url('assets/img/hero-marmol.jpg');
   background-size: cover;
-  background-position: center 35%;
+  background-position: center 40%;
   background-repeat: no-repeat;
 }
 
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.18) 100%);
+  background:
+    radial-gradient(ellipse 55% 42% at 50% 78%, rgba(0, 0, 0, 0.4), transparent 72%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 35%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.32) 100%);
 }
 
 .hero__content {
@@ -278,6 +279,7 @@ img { max-width: 100%; display: block; }
 .hero__title {
   font-size: clamp(2.6rem, 8vw, 5.5rem);
   color: #FAF8F5;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
 }
 
 .hero__subtitle {
@@ -285,6 +287,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.3em;
   font-size: 0.8rem;
   color: var(--gold);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
   margin-bottom: 32px;
 }
 
@@ -733,7 +736,7 @@ img { max-width: 100%; display: block; }
 @media (max-width: 600px) {
   /* Recentra el mármol/diamante para que no quede cortado en pantallas
      estrechas. Si el cliente aporta un recorte específico para móvil,
-     apuntar aquí a assets/img/hero-marmol-mobile.png en su lugar. */
+     apuntar aquí a assets/img/hero-marmol-mobile.jpg en su lugar. */
   .hero__bg {
     background-position: 62% center;
   }

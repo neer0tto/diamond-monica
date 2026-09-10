@@ -1,15 +1,13 @@
-Coloca aquí la foto real del cliente con el nombre exacto:
+hero-marmol.jpg — foto real del cliente (mármol rosa con diamante hueco),
+ya colocada y en uso como fondo del hero en index.html/estilos.css.
 
-  hero-marmol.png
+Se optimizó desde el original (~2.2 MB) a un JPEG de 1600px de ancho
+y calidad 76, quedando en ~120 KB para que cargue rápido en móvil.
+El archivo original de mayor resolución no se conserva en el repo;
+si hace falta una versión más grande o en otro formato, pedir al
+cliente el archivo fuente de nuevo.
 
-(mármol rosa con diamante hueco, usada como fondo del hero en index.html/estilos.css)
-
-Recomendaciones antes de subirla:
-- Comprimir a JPEG u WebP optimizado, idealmente entre 150 y 250 KB, para que cargue rápido en móvil.
-- Resolución sugerida: al menos 1920px de ancho para que se vea nítida en pantallas grandes.
-- Si en pantallas estrechas el diamante queda cortado de forma rara, se puede añadir además
-  "hero-marmol-mobile.png" (un recorte pensado para móvil) y referenciarlo en el media query
-  de estilos.css (@media max-width: 600px, dentro de .hero__bg).
-
-Mientras este archivo no exista, el hero usa un degradado de respaldo en tonos dorado/rosa
-generado por CSS puro (ver .hero en estilos.css), para que la web no se vea rota.
+Si en pantallas estrechas el diamante queda cortado de forma rara,
+se puede añadir "hero-marmol-mobile.jpg" (un recorte pensado para
+móvil) y referenciarlo en el media query de estilos.css
+(@media max-width: 600px, dentro de .hero__bg).
