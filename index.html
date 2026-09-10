@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Beauty | Centro de estética en Alcobendas, Madrid</title>
+<meta name="description" content="Diamond Beauty, centro de estética en Alcobendas, Madrid. Manicura, pedicura, cejas, pestañas, depilación, faciales y masajes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="header__inner container">
+    <a href="#inicio" class="logo">
+      <!-- IMG: sustituir por foto real del cliente (logo del negocio) -->
+      <span class="logo__placeholder" aria-label="Logo Diamond Beauty">DB</span>
+      <span class="logo__text">Diamond<em>Beauty</em></span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="nav">
+      <ul class="nav__list">
+        <li><a href="#inicio" class="nav__link">Inicio</a></li>
+        <li><a href="#servicios" class="nav__link">Servicios</a></li>
+        <li><a href="#reservar" class="nav__link">Reservar</a></li>
+        <li><a href="#contacto" class="nav__link">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="inicio" class="hero">
+    <div class="hero__marble" aria-hidden="true"></div>
+    <div class="hero__content container fade-in">
+      <p class="hero__eyebrow">Alcobendas · Madrid</p>
+      <h1 class="hero__title">Diamond Beauty</h1>
+      <p class="hero__subtitle">Belleza y cuidado con el detalle que mereces</p>
+      <a href="#reservar" class="btn btn--gold">Reservar cita</a>
+    </div>
+  </section>
+
+  <!-- SOBRE NOSOTROS -->
+  <section id="sobre-nosotros" class="about container">
+    <div class="about__image fade-in">
+      <!-- IMG: sustituir por foto real del local -->
+      <div class="img-placeholder">
+        <span>Foto del local</span>
+      </div>
+    </div>
+    <div class="about__text fade-in">
+      <p class="section__eyebrow">Sobre nosotros</p>
+      <h2 class="section__title">Un espacio pensado para ti</h2>
+      <p>En Diamond Beauty combinamos técnica, calma y atención al detalle para que cada visita sea un momento solo tuyo. Manos, pies, rostro y cuerpo cuidados por profesionales en el corazón de Alcobendas.</p>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="services">
+    <div class="container">
+      <p class="section__eyebrow fade-in">Servicios</p>
+      <h2 class="section__title fade-in">Nuestros tratamientos</h2>
+
+      <div class="tabs fade-in" role="tablist" aria-label="Zonas de servicios">
+        <button class="tab is-active" data-zone="manos" role="tab" aria-selected="true">Manos</button>
+        <button class="tab" data-zone="pies" role="tab" aria-selected="false">Pies</button>
+        <button class="tab" data-zone="cejasPestanas" role="tab" aria-selected="false">Cejas y pestañas</button>
+        <button class="tab" data-zone="rostro" role="tab" aria-selected="false">Rostro</button>
+        <button class="tab" data-zone="cuerpo" role="tab" aria-selected="false">Cuerpo</button>
+      </div>
+
+      <div id="servicesGrid" class="services__grid fade-in">
+        <!-- Las tarjetas de servicios se generan dinámicamente desde script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVAR -->
+  <section id="reservar" class="booking">
+    <div class="container">
+      <p class="section__eyebrow fade-in">Reservar</p>
+      <h2 class="section__title fade-in">Pide tu cita</h2>
+      <p class="booking__hint fade-in">Completa el formulario y te redirigiremos a WhatsApp con tu solicitud lista para enviar.</p>
+
+      <form id="bookingForm" class="booking__form fade-in">
+        <div class="form__row">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+
+        <div class="form__row">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+
+        <div class="form__row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email">
+        </div>
+
+        <div class="form__row">
+          <label for="servicio">Servicio</label>
+          <select id="servicio" name="servicio" required>
+            <option value="" disabled selected>Selecciona un servicio</option>
+            <!-- Options generadas dinámicamente por zona desde script.js -->
+          </select>
+        </div>
+
+        <div class="form__row">
+          <label for="empleada">Profesional</label>
+          <select id="empleada" name="empleada">
+            <option value="Sin preferencia">Sin preferencia</option>
+            <!-- Options generadas dinámicamente desde script.js -->
+          </select>
+        </div>
+
+        <div class="form__row">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+
+        <div class="form__row">
+          <label for="hora">Hora preferida</label>
+          <input type="time" id="hora" name="hora" required>
+        </div>
+
+        <button type="submit" class="btn btn--gold booking__submit">Reservar por WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <!-- Nombres y especialidades a confirmar con el cliente -->
+  <section id="equipo" class="team">
+    <div class="container">
+      <p class="section__eyebrow fade-in">Nuestro equipo</p>
+      <h2 class="section__title fade-in">Profesionales a tu servicio</h2>
+
+      <div class="team__grid" id="teamGrid">
+        <!-- Tarjetas generadas dinámicamente desde script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEÑAS -->
+  <section id="resenas" class="reviews">
+    <div class="container">
+      <p class="section__eyebrow fade-in">Reseñas</p>
+      <h2 class="section__title fade-in">Lo que dicen de nosotras</h2>
+
+      <div class="reviews__summary fade-in">
+        <span class="reviews__score">4.9</span>
+        <div>
+          <span class="reviews__stars" aria-hidden="true">★★★★★</span>
+          <p class="reviews__count">120 reseñas en Google y Booksy</p>
+        </div>
+      </div>
+
+      <blockquote class="review-card fade-in">
+        <p>&ldquo;Excelente servicio, muy profesionales&rdquo;</p>
+        <footer>Google / Booksy</footer>
+      </blockquote>
+      <!-- TODO: añadir aquí más reseñas reales cuando el cliente las facilite -->
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" id="contacto">
+  <div class="container footer__grid">
+    <div class="footer__col fade-in">
+      <h3>Diamond Beauty</h3>
+      <p>Calle de Santiago Apóstol, 7<br>28100 Alcobendas, Madrid</p>
+      <!-- Horario placeholder: falta confirmar días de descanso con el cliente -->
+      <p>Lun&ndash;Dom: 10:00 &ndash; 20:00<br><small>(horario provisional, pendiente de confirmar)</small></p>
+      <a href="https://instagram.com/diamond.beauty.21" target="_blank" rel="noopener" class="footer__ig">@diamond.beauty.21</a>
+    </div>
+
+    <div class="footer__col footer__map fade-in">
+      <iframe
+        title="Ubicación Diamond Beauty en Alcobendas"
+        src="https://www.google.com/maps?q=Calle+de+Santiago+Ap%C3%B3stol+7,+28100+Alcobendas,+Madrid&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+  <p class="footer__legal">&copy; <span id="year"></span> Diamond Beauty. Todos los derechos reservados.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
