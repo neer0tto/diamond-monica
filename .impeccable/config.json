@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "estilos.css"
+        ],
+        "createdAt": "2026-09-10T19:52:47.081Z",
+        "reason": "user confirmed: pidió explícitamente que el acento #D9958A resalte bordes de tarjeta activa/chips; el glow en .zone-card.is-active es ese realce intencional, no decoración gratuita"
+      }
+    ]
+  }
+}

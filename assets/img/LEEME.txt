@@ -1,13 +1,17 @@
-hero-marmol.jpg — foto real del cliente (mármol rosa con diamante hueco),
-ya colocada y en uso como fondo del hero en index.html/estilos.css.
+hero-marmol.jpg — foto real del cliente (mármol rosa con vetas doradas,
+sin diamante integrado en esta versión), en uso como fondo del hero en
+index.html/estilos.css. El diamante hueco que se ve encima del título
+ya no viene en la foto: se dibuja aparte con un SVG (.hero__diamond en
+estilos.css), así que si el cliente cambia la foto de fondo el
+diamante se mantiene sin tener que regenerarlo.
 
-Se optimizó desde el original (~2.2 MB) a un JPEG de 1600px de ancho
-y calidad 76, quedando en ~120 KB para que cargue rápido en móvil.
+Se optimizó desde el original (~2.36 MB) a un JPEG de 1600px de ancho
+y calidad 76, quedando en ~135 KB para que cargue rápido en móvil.
 El archivo original de mayor resolución no se conserva en el repo;
 si hace falta una versión más grande o en otro formato, pedir al
 cliente el archivo fuente de nuevo.
 
-Si en pantallas estrechas el diamante queda cortado de forma rara,
+Si en pantallas estrechas el mármol queda encuadrado de forma rara,
 se puede añadir "hero-marmol-mobile.jpg" (un recorte pensado para
 móvil) y referenciarlo en el media query de estilos.css
 (@media max-width: 600px, dentro de .hero__bg).
