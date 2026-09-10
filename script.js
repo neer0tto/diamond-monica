@@ -39,7 +39,7 @@ const ZONE_LABELS = ZONE_META.reduce((acc, zone) => {
 }, {});
 
 // Categorías de filtro dentro de la zona "Manos"
-const MANOS_CATEGORIES = ["Todos", "Básicos", "Semipermanente", "Acrílicas y gel", "Extras"];
+const MANOS_CATEGORIES = ["Básicos", "Semipermanente", "Acrílicas y gel", "Extras"];
 
 const SERVICES = {
   manos: [
@@ -162,7 +162,7 @@ nav.querySelectorAll(".nav__link").forEach((link) => {
 const accordionEl = document.getElementById("servicesAccordion");
 
 let openZone = "manos";
-let activeCategory = "Todos";
+let activeCategory = null;
 
 function parsePrice(priceStr) {
   const match = priceStr.replace(",", ".").match(/(\d+(\.\d+)?)/);
@@ -181,7 +181,7 @@ function zoneMinPrice(zoneKey) {
 
 function renderRows(zoneKey) {
   const items = SERVICES[zoneKey].filter((item) => {
-    if (zoneKey !== "manos" || activeCategory === "Todos") return true;
+    if (zoneKey !== "manos" || activeCategory === null) return true;
     return item.category === activeCategory;
   });
 
@@ -258,8 +258,11 @@ function renderAccordion() {
 accordionEl.addEventListener("click", (event) => {
   const chip = event.target.closest(".chip");
   if (chip) {
-    activeCategory = chip.dataset.category;
-    chip.parentElement.querySelectorAll(".chip").forEach((c) => c.classList.toggle("is-active", c === chip));
+    const category = chip.dataset.category;
+    activeCategory = activeCategory === category ? null : category;
+    chip.parentElement.querySelectorAll(".chip").forEach((c) => {
+      c.classList.toggle("is-active", c.dataset.category === activeCategory);
+    });
     renderRowsInto("manos");
     return;
   }

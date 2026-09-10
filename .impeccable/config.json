@@ -26,6 +26,15 @@
         ],
         "createdAt": "2026-09-10T19:56:56.774Z",
         "reason": "user confirmed: pidió explícitamente mayúsculas con letter-spacing para el subtítulo del hero (texto corto, no párrafo largo)"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T20:29:51.486Z",
+        "reason": "user confirmed: pidió explícitamente un resplandor en capas (box-shadow rgba(217,149,138,...) en el botón Reservar cita, drop-shadow en el diamante) con valores exactos, para efecto 'joyería sutil', no un halo neón por defecto"
       }
     ]
   }
