@@ -3,16 +3,21 @@
    ========================================================================== */
 
 :root {
-  --black: #0b0b0c;
-  --black-soft: #16151a;
-  --ivory: #f4efe6;
-  --ivory-soft: #eae3d3;
-  --gold: #c9a24b;
-  --gold-light: #e8d29c;
-  --gray-line: rgba(244, 239, 230, 0.12);
+  --black: #0A0A0A;
+  --black-soft: #151515;
+  --ivory: #F5F0E6;
+  --ivory-soft: #d9d2c2;
+  --gold: #C9A227;
+  --gold-light: #e3c15f;
+  --gray-line: rgba(245, 240, 230, 0.12);
 
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-sans: 'Poppins', sans-serif;
+  --marble:
+    repeating-linear-gradient(115deg, rgba(245, 240, 230, 0.035) 0px, rgba(245, 240, 230, 0.035) 1px, transparent 1px, transparent 70px),
+    repeating-linear-gradient(25deg, rgba(245, 240, 230, 0.025) 0px, rgba(245, 240, 230, 0.025) 1px, transparent 1px, transparent 110px),
+    linear-gradient(135deg, #2B2B2B 0%, #3D3D3D 40%, #2B2B2B 60%, #3D3D3D 100%);
+
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Montserrat', sans-serif;
 
   --container-width: 1160px;
 }
@@ -127,7 +132,7 @@ img { max-width: 100%; display: block; }
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(11, 11, 12, 0.85);
+  background: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--gray-line);
 }
@@ -232,11 +237,11 @@ img { max-width: 100%; display: block; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 15% 20%, rgba(201, 162, 75, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(201, 162, 75, 0.08), transparent 50%),
-    repeating-linear-gradient(115deg, rgba(244,239,230,0.03) 0px, rgba(244,239,230,0.03) 1px, transparent 1px, transparent 90px),
-    repeating-linear-gradient(25deg, rgba(244,239,230,0.02) 0px, rgba(244,239,230,0.02) 1px, transparent 1px, transparent 140px),
-    linear-gradient(160deg, #0b0b0c 0%, #17161a 45%, #0b0b0c 100%);
+    radial-gradient(circle at 15% 20%, rgba(201, 162, 39, 0.12), transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(201, 162, 39, 0.09), transparent 50%),
+    repeating-linear-gradient(115deg, rgba(245,240,230,0.03) 0px, rgba(245,240,230,0.03) 1px, transparent 1px, transparent 90px),
+    repeating-linear-gradient(25deg, rgba(245,240,230,0.02) 0px, rgba(245,240,230,0.02) 1px, transparent 1px, transparent 140px),
+    linear-gradient(160deg, #0A0A0A 0%, #17161a 45%, #0A0A0A 100%);
 }
 
 .hero__content {
@@ -280,7 +285,7 @@ img { max-width: 100%; display: block; }
   width: 100%;
   aspect-ratio: 4 / 3;
   border: 1px dashed var(--gold);
-  background: var(--black-soft);
+  background: var(--marble);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -301,7 +306,7 @@ img { max-width: 100%; display: block; }
    ========================================================================== */
 .services {
   padding: 100px 0 120px;
-  background: var(--black-soft);
+  background: var(--marble);
 }
 
 .tabs {
@@ -468,7 +473,7 @@ img { max-width: 100%; display: block; }
    ========================================================================== */
 .team {
   padding: 100px 0 120px;
-  background: var(--black-soft);
+  background: var(--marble);
 }
 
 .team__grid {
@@ -502,7 +507,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-serif);
   font-size: 1.6rem;
   color: var(--gold);
-  background: var(--black);
+  background: var(--marble);
 }
 
 .team-card h3 {
@@ -576,7 +581,7 @@ img { max-width: 100%; display: block; }
    FOOTER
    ========================================================================== */
 .footer {
-  background: var(--black-soft);
+  background: var(--marble);
   border-top: 1px solid var(--gray-line);
   padding: 72px 0 24px;
 }
@@ -655,7 +660,7 @@ img { max-width: 100%; display: block; }
     top: 76px;
     left: 0;
     right: 0;
-    background: rgba(11, 11, 12, 0.97);
+    background: rgba(10, 10, 10, 0.97);
     border-bottom: 1px solid var(--gray-line);
     max-height: 0;
     overflow: hidden;
