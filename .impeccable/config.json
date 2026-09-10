@@ -11,6 +11,21 @@
         ],
         "createdAt": "2026-09-10T19:52:47.081Z",
         "reason": "user confirmed: pidió explícitamente que el acento #D9958A resalte bordes de tarjeta activa/chips; el glow en .zone-card.is-active es ese realce intencional, no decoración gratuita"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "createdAt": "2026-09-10T19:56:56.426Z",
+        "reason": "user confirmed: pidió explícitamente Montserrat para el cuerpo de texto en el brief inicial (dos veces)"
+      },
+      {
+        "rule": "all-caps-body",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T19:56:56.774Z",
+        "reason": "user confirmed: pidió explícitamente mayúsculas con letter-spacing para el subtítulo del hero (texto corto, no párrafo largo)"
       }
     ]
   }

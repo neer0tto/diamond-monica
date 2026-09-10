@@ -211,10 +211,7 @@ function renderServices() {
     card.className = "service-card";
     card.innerHTML = `
       <h3>${item.name}</h3>
-      <div class="service-card__meta">
-        <span class="service-card__price">${item.price}</span>
-        <span class="service-card__duration">${item.duration}</span>
-      </div>
+      <div class="service-card__meta">${item.price} · ${item.duration}</div>
     `;
     servicesGrid.appendChild(card);
   });
