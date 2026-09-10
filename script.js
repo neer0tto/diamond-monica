@@ -5,34 +5,73 @@
 // TODO: sustituir por el número real de WhatsApp del negocio
 const WHATSAPP_NUMBER = "34600000000";
 
-const ZONE_LABELS = {
-  manos: "Manos",
-  pies: "Pies",
-  cejasPestanas: "Cejas y pestañas",
-  rostro: "Rostro",
-  cuerpo: "Cuerpo"
-};
+const ZONE_META = [
+  {
+    key: "manos",
+    label: "Manos",
+    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26V14a2.5 2.5 0 0 1 5 0v8"/><path d="M19 22v-9a2.5 2.5 0 0 1 5 0v9"/><path d="M24 22v-8a2.5 2.5 0 0 1 5 0v9"/><path d="M29 23v-5a2.5 2.5 0 0 1 5 0v13c0 6-4 10-10 10h-2c-5 0-7-2-9-6l-4-8a2.3 2.3 0 0 1 4-2.2l3 4.2"/></svg>'
+  },
+  {
+    key: "pies",
+    label: "Pies",
+    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 40c-3 0-5-2-5-5 0-4 2-6 2-11 0-5-2-7-2-11a7 7 0 0 1 14 0c0 3-1 5-1 8 0 4 2 5 4 8 2 3 3 5 3 8a3 3 0 0 1-3 3z"/><circle cx="16" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="20" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="24" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="27" cy="10" r="1.3" fill="currentColor" stroke="none"/></svg>'
+  },
+  {
+    key: "cejasPestanas",
+    label: "Cejas y pestañas",
+    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 25c5-8 13-12 18-12s13 4 18 12c-5 8-13 12-18 12S11 33 6 25z"/><circle cx="24" cy="25" r="4.5"/><path d="M30 14l2-4M35 17l3-3M38 22l4-2"/></svg>'
+  },
+  {
+    key: "rostro",
+    label: "Rostro",
+    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="15"/><circle cx="18" cy="21" r="1.5" fill="currentColor" stroke="none"/><circle cx="30" cy="21" r="1.5" fill="currentColor" stroke="none"/><path d="M17 30c2 3 5 4.5 7 4.5s5-1.5 7-4.5"/></svg>'
+  },
+  {
+    key: "cuerpo",
+    label: "Cuerpo",
+    icon: '<svg class="zone-card__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="10" r="5"/><path d="M14 40l3-14a7 7 0 0 1 14 0l3 14"/><path d="M17 26h14"/></svg>'
+  }
+];
+
+const ZONE_LABELS = ZONE_META.reduce((acc, zone) => {
+  acc[zone.key] = zone.label;
+  return acc;
+}, {});
+
+// Categorías de filtro dentro de la zona "Manos"
+const MANOS_CATEGORIES = ["Todos", "Básicos", "Semipermanente", "Acrílicas y gel", "Extras"];
 
 const SERVICES = {
   manos: [
-    { name: "Manicura tradicional + cutícula", desc: "Limado, cutículas y esmaltado clásico para unas manos cuidadas.", price: "12€", duration: "45 min" },
-    { name: "Manicura semipermanente", desc: "Color de larga duración con acabado brillante hasta 3 semanas.", price: "17€", duration: "40 min" },
-    { name: "Esmaltado tradicional", desc: "Aplicación de esmalte clásico en el color que elijas.", price: "8€", duration: "25 min" },
-    { name: "Manicura francesa", desc: "El clásico esmaltado blanco y nude de punta francesa.", price: "2,50€", duration: "10 min" },
-    { name: "Manicura infantil", desc: "Manicura suave y divertida pensada para las más pequeñas.", price: "5€", duration: "30 min" },
-    { name: "Manicura con refuerzo color", desc: "Refuerzo de la uña natural combinado con color semipermanente.", price: "20€", duration: "50 min" },
-    { name: "Retirado de semipermanente", desc: "Retirada segura del esmaltado semipermanente sin dañar la uña.", price: "3€", duration: "30 min" },
-    { name: "Base rubber", desc: "Base elástica que fortalece la uña antes del esmaltado.", price: "3€", duration: "10 min" },
-    { name: "Uñas soft gel", desc: "Extensión en gel flexible de acabado natural y ligero.", price: "25€", duration: "1h 10min" },
-    { name: "Relleno soft gel", desc: "Mantenimiento y relleno de tus uñas de soft gel.", price: "23€", duration: "55 min" },
-    { name: "Uñas acrílicas con TIP", desc: "Extensión de uñas acrílicas con molde tip.", price: "Desde 28€", duration: "—" },
-    { name: "Uñas acrílicas extra largas", desc: "Extensión acrílica de largo extra para un look llamativo.", price: "42–45€", duration: "—" },
-    { name: "Uñas acrygel", desc: "Técnica mixta acrílico-gel, resistente y de acabado natural.", price: "30€", duration: "1h 45min" },
-    { name: "Acrílicos babyboomer", desc: "Degradado suave entre blanco y nude en acrílico.", price: "35€", duration: "1h 45min" },
-    { name: "Baño acrílico", desc: "Capa fina de acrílico sobre la uña natural para reforzarla.", price: "24€", duration: "1h 20min" },
-    { name: "Relleno de uñas", desc: "Mantenimiento de tus uñas acrílicas o de gel.", price: "25€", duration: "1h 30min" },
-    { name: "Reconstrucción de 1 uña", desc: "Reparación puntual de una uña rota o dañada.", price: "3€", duration: "15 min" },
-    { name: "Decoración de uñas", desc: "Diseños, pedrería o nail art a partir de un precio.", price: "Desde 1€", duration: "—" }
+    { category: "Básicos", name: "Manicura tradicional + cutícula", desc: "Limado, cutículas y esmaltado clásico para unas manos cuidadas.", price: "12€", duration: "45 min" },
+    { category: "Básicos", name: "Manicura semipermanente", desc: "Color de larga duración con acabado brillante hasta 3 semanas.", price: "17€", duration: "40 min" },
+    { category: "Básicos", name: "Esmaltado tradicional", desc: "Aplicación de esmalte clásico en el color que elijas.", price: "8€", duration: "25 min" },
+    { category: "Básicos", name: "Manicura francesa", desc: "El clásico esmaltado blanco y nude de punta francesa.", price: "2,50€", duration: "10 min" },
+    { category: "Básicos", name: "Manicura infantil", desc: "Manicura suave y divertida pensada para las más pequeñas.", price: "5€", duration: "30 min" },
+    { category: "Básicos", name: "Manicura con refuerzo color", desc: "Refuerzo de la uña natural combinado con color semipermanente.", price: "20€", duration: "50 min" },
+    { category: "Básicos", name: "Retirado de semipermanente", desc: "Retirada segura del esmaltado semipermanente sin dañar la uña.", price: "3€", duration: "30 min" },
+    { category: "Básicos", name: "Base rubber", desc: "Base elástica que fortalece la uña antes del esmaltado.", price: "3€", duration: "10 min" },
+
+    { category: "Semipermanente", name: "Uñas soft gel", desc: "Extensión en gel flexible de acabado natural y ligero.", price: "25€", duration: "1h 10min" },
+    { category: "Semipermanente", name: "Relleno de soft gel", desc: "Mantenimiento y relleno de tus uñas de soft gel.", price: "23€", duration: "55 min" },
+
+    { category: "Acrílicas y gel", name: "Uñas acrílicas con TIP", desc: "Extensión de uñas acrílicas con molde tip.", price: "Desde 28€", duration: "—" },
+    { category: "Acrílicas y gel", name: "Uñas acrílicas extra largas", desc: "Extensión acrílica de largo extra para un look llamativo.", price: "42–45€", duration: "—" },
+    { category: "Acrílicas y gel", name: "Uñas acrygel", desc: "Técnica mixta acrílico-gel, resistente y de acabado natural.", price: "30€", duration: "1h 45min" },
+    { category: "Acrílicas y gel", name: "Acrílicos babyboomer", desc: "Degradado suave entre blanco y nude en acrílico.", price: "35€", duration: "1h 45min" },
+    // TODO: pedir al cliente precio y duración reales (servicio nuevo, sin datos todavía)
+    { category: "Acrílicas y gel", name: "Uñas acrílicas con molde", desc: "Extensión acrílica esculpida directamente con molde, sin tip.", price: "Consultar", duration: "—" },
+    { category: "Acrílicas y gel", name: "Relleno de uñas", desc: "Mantenimiento de tus uñas acrílicas o de gel.", price: "25€", duration: "1h 30min" },
+    { category: "Acrílicas y gel", name: "Baño acrílico", desc: "Capa fina de acrílico sobre la uña natural para reforzarla.", price: "24€", duration: "1h 20min" },
+    // TODO: pedir al cliente precio y duración reales (servicio nuevo, sin datos todavía)
+    { category: "Acrílicas y gel", name: "Encapsulados en acrílico", desc: "Diseños o glitter encapsulados dentro de la capa de acrílico.", price: "Consultar", duration: "—" },
+    // TODO: pedir al cliente precio y duración reales (servicio nuevo, sin datos todavía)
+    { category: "Acrílicas y gel", name: "Retirada de uñas acrílicas", desc: "Retirada segura de la extensión acrílica sin dañar la uña natural.", price: "Consultar", duration: "—" },
+
+    { category: "Extras", name: "Decoración de uñas", desc: "Diseños, pedrería o nail art a partir de un precio.", price: "Desde 1€", duration: "—" },
+    { category: "Extras", name: "Reconstrucción de una uña", desc: "Reparación puntual de una uña rota o dañada.", price: "3€", duration: "15 min" },
+    // TODO: pedir al cliente precio y duración reales (servicio nuevo, sin datos todavía)
+    { category: "Extras", name: "Diseño 3D", desc: "Nail art con volumen y relieve para un acabado único.", price: "Consultar", duration: "—" }
   ],
 
   pies: [
@@ -118,15 +157,45 @@ nav.querySelectorAll(".nav__link").forEach((link) => {
 });
 
 // --------------------------------------------------------------------------
-// Tabs de servicios
+// Zonas de servicios (tarjetas), filtros (chips) y grid
 // --------------------------------------------------------------------------
-const tabs = document.querySelectorAll(".tab");
+const zoneCardsEl = document.getElementById("zoneCards");
+const activeZoneLabelEl = document.getElementById("activeZoneLabel");
+const serviceFiltersEl = document.getElementById("serviceFilters");
 const servicesGrid = document.getElementById("servicesGrid");
 
-function renderServices(zone) {
-  const items = SERVICES[zone];
-  servicesGrid.innerHTML = "";
+let activeZone = "manos";
+let activeCategory = "Todos";
 
+function renderZoneCards() {
+  zoneCardsEl.innerHTML = ZONE_META.map((zone) => `
+    <button type="button" class="zone-card${zone.key === activeZone ? " is-active" : ""}" data-zone="${zone.key}">
+      ${zone.icon}
+      <span class="zone-card__label">${zone.label}</span>
+    </button>
+  `).join("");
+}
+
+function renderChips() {
+  if (activeZone !== "manos") {
+    serviceFiltersEl.hidden = true;
+    serviceFiltersEl.innerHTML = "";
+    return;
+  }
+
+  serviceFiltersEl.hidden = false;
+  serviceFiltersEl.innerHTML = MANOS_CATEGORIES.map((category) => `
+    <button type="button" class="chip${category === activeCategory ? " is-active" : ""}" data-category="${category}">${category}</button>
+  `).join("");
+}
+
+function renderServices() {
+  const items = SERVICES[activeZone].filter((item) => {
+    if (activeZone !== "manos" || activeCategory === "Todos") return true;
+    return item.category === activeCategory;
+  });
+
+  servicesGrid.innerHTML = "";
   let lastGroup = null;
 
   items.forEach((item) => {
@@ -142,7 +211,6 @@ function renderServices(zone) {
     card.className = "service-card";
     card.innerHTML = `
       <h3>${item.name}</h3>
-      <p class="service-card__desc">${item.desc}</p>
       <div class="service-card__meta">
         <span class="service-card__price">${item.price}</span>
         <span class="service-card__duration">${item.duration}</span>
@@ -152,19 +220,33 @@ function renderServices(zone) {
   });
 }
 
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    tabs.forEach((t) => {
-      t.classList.remove("is-active");
-      t.setAttribute("aria-selected", "false");
-    });
-    tab.classList.add("is-active");
-    tab.setAttribute("aria-selected", "true");
-    renderServices(tab.dataset.zone);
-  });
+function renderActiveZonePanel() {
+  activeZoneLabelEl.textContent = ZONE_LABELS[activeZone];
+  renderChips();
+  renderServices();
+}
+
+zoneCardsEl.addEventListener("click", (event) => {
+  const button = event.target.closest(".zone-card");
+  if (!button) return;
+
+  activeZone = button.dataset.zone;
+  activeCategory = "Todos";
+  renderZoneCards();
+  renderActiveZonePanel();
 });
 
-renderServices("manos");
+serviceFiltersEl.addEventListener("click", (event) => {
+  const chip = event.target.closest(".chip");
+  if (!chip) return;
+
+  activeCategory = chip.dataset.category;
+  renderChips();
+  renderServices();
+});
+
+renderZoneCards();
+renderActiveZonePanel();
 
 // --------------------------------------------------------------------------
 // Selects del formulario (servicio agrupado por zona + empleada)

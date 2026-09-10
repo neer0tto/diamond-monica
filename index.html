@@ -73,18 +73,20 @@
   <section id="servicios" class="services">
     <div class="container">
       <p class="section__eyebrow fade-in">Servicios</p>
-      <h2 class="section__title fade-in">Nuestros tratamientos</h2>
+      <h2 class="section__title fade-in">Nuestros servicios</h2>
 
-      <div class="tabs fade-in" role="tablist" aria-label="Zonas de servicios">
-        <button class="tab is-active" data-zone="manos" role="tab" aria-selected="true">Manos</button>
-        <button class="tab" data-zone="pies" role="tab" aria-selected="false">Pies</button>
-        <button class="tab" data-zone="cejasPestanas" role="tab" aria-selected="false">Cejas y pestañas</button>
-        <button class="tab" data-zone="rostro" role="tab" aria-selected="false">Rostro</button>
-        <button class="tab" data-zone="cuerpo" role="tab" aria-selected="false">Cuerpo</button>
+      <div id="zoneCards" class="zone-cards fade-in">
+        <!-- Tarjetas de zona generadas dinámicamente desde script.js -->
+      </div>
+
+      <p id="activeZoneLabel" class="services__zone-label fade-in"></p>
+
+      <div id="serviceFilters" class="chips fade-in" hidden>
+        <!-- Chips de categoría (solo Manos) generados dinámicamente desde script.js -->
       </div>
 
       <div id="servicesGrid" class="services__grid fade-in">
-        <!-- Las tarjetas de servicios se generan dinámicamente desde script.js -->
+        <!-- Recuadros de servicio generados dinámicamente desde script.js -->
       </div>
     </div>
   </section>
