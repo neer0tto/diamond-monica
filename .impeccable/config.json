@@ -35,6 +35,15 @@
         ],
         "createdAt": "2026-09-10T20:29:51.486Z",
         "reason": "user confirmed: pidió explícitamente un resplandor en capas (box-shadow rgba(217,149,138,...) en el botón Reservar cita, drop-shadow en el diamante) con valores exactos, para efecto 'joyería sutil', no un halo neón por defecto"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "reseñas.html"
+        ],
+        "createdAt": "2026-09-11T11:18:15.315Z",
+        "reason": "user confirmed: mismo componente footer__map-frame con resplandor rosa ya aprobado en index.html, reutilizado tal cual en la nueva página de reseñas"
       }
     ]
   }

@@ -166,6 +166,8 @@ const accordionEl = document.getElementById("servicesAccordion");
 let openZone = null;
 let activeCategory = null;
 
+if (accordionEl) {
+
 function parsePrice(priceStr) {
   const match = priceStr.replace(",", ".").match(/(\d+(\.\d+)?)/);
   return match ? parseFloat(match[1]) : null;
@@ -286,6 +288,7 @@ accordionEl.addEventListener("click", (event) => {
 });
 
 renderAccordion();
+}
 
 // --------------------------------------------------------------------------
 // Selects del formulario (servicio agrupado por zona + empleada)
@@ -293,43 +296,47 @@ renderAccordion();
 const servicioSelect = document.getElementById("servicio");
 const empleadaSelect = document.getElementById("empleada");
 
-Object.keys(SERVICES).forEach((zone) => {
-  const optgroup = document.createElement("optgroup");
-  optgroup.label = ZONE_LABELS[zone];
+if (servicioSelect && empleadaSelect) {
+  Object.keys(SERVICES).forEach((zone) => {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = ZONE_LABELS[zone];
 
-  SERVICES[zone].forEach((item) => {
-    const option = document.createElement("option");
-    option.value = item.name;
-    option.textContent = `${item.name} (${item.price})`;
-    optgroup.appendChild(option);
+    SERVICES[zone].forEach((item) => {
+      const option = document.createElement("option");
+      option.value = item.name;
+      option.textContent = `${item.name} (${item.price})`;
+      optgroup.appendChild(option);
+    });
+
+    servicioSelect.appendChild(optgroup);
   });
 
-  servicioSelect.appendChild(optgroup);
-});
-
-TEAM.forEach((member) => {
-  const option = document.createElement("option");
-  option.value = member.name;
-  option.textContent = `${member.name} — ${member.specialty}`;
-  empleadaSelect.appendChild(option);
-});
+  TEAM.forEach((member) => {
+    const option = document.createElement("option");
+    option.value = member.name;
+    option.textContent = `${member.name} — ${member.specialty}`;
+    empleadaSelect.appendChild(option);
+  });
+}
 
 // --------------------------------------------------------------------------
 // Equipo
 // --------------------------------------------------------------------------
 const teamGrid = document.getElementById("teamGrid");
 
-TEAM.forEach((member) => {
-  const card = document.createElement("div");
-  card.className = "team-card fade-in";
-  card.innerHTML = `
-    <!-- IMG: sustituir por foto real de la profesional -->
-    <div class="team-card__avatar">${member.name.charAt(0)}</div>
-    <h3>${member.name}</h3>
-    <p>${member.specialty}</p>
-  `;
-  teamGrid.appendChild(card);
-});
+if (teamGrid) {
+  TEAM.forEach((member) => {
+    const card = document.createElement("div");
+    card.className = "team-card fade-in";
+    card.innerHTML = `
+      <!-- IMG: sustituir por foto real de la profesional -->
+      <div class="team-card__avatar">${member.name.charAt(0)}</div>
+      <h3>${member.name}</h3>
+      <p>${member.specialty}</p>
+    `;
+    teamGrid.appendChild(card);
+  });
+}
 
 // --------------------------------------------------------------------------
 // Formulario de reserva → WhatsApp
@@ -337,27 +344,54 @@ TEAM.forEach((member) => {
 // --------------------------------------------------------------------------
 const bookingForm = document.getElementById("bookingForm");
 
-bookingForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+if (bookingForm) {
+  bookingForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  const nombre = document.getElementById("nombre").value.trim();
-  const telefono = document.getElementById("telefono").value.trim();
-  const servicio = servicioSelect.value;
-  const empleada = empleadaSelect.value;
-  const fecha = document.getElementById("fecha").value;
-  const hora = document.getElementById("hora").value;
+    const nombre = document.getElementById("nombre").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+    const servicio = servicioSelect.value;
+    const empleada = empleadaSelect.value;
+    const fecha = document.getElementById("fecha").value;
+    const hora = document.getElementById("hora").value;
 
-  const fechaFormateada = fecha
-    ? new Date(fecha + "T00:00:00").toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" })
-    : "";
+    const fechaFormateada = fecha
+      ? new Date(fecha + "T00:00:00").toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" })
+      : "";
 
-  const mensaje =
-    `Hola, quiero reservar: ${servicio} con ${empleada} el ${fechaFormateada} a las ${hora}. ` +
-    `Mi nombre es ${nombre}. Mi teléfono es ${telefono}.`;
+    const mensaje =
+      `Hola, quiero reservar: ${servicio} con ${empleada} el ${fechaFormateada} a las ${hora}. ` +
+      `Mi nombre es ${nombre}. Mi teléfono es ${telefono}.`;
 
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-});
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
+  });
+}
+
+// --------------------------------------------------------------------------
+// Reseñas (página reseñas.html) — datos editables en reviews.js
+// --------------------------------------------------------------------------
+const reviewsSummaryEl = document.getElementById("reviewsSummary");
+const reviewsListEl = document.getElementById("reviewsList");
+
+if (reviewsListEl && typeof REVIEWS !== "undefined") {
+  if (reviewsSummaryEl && typeof REVIEWS_SUMMARY !== "undefined") {
+    reviewsSummaryEl.innerHTML = `
+      <span class="reviews__score">${REVIEWS_SUMMARY.score}</span>
+      <div>
+        <span class="reviews__stars" aria-hidden="true">★★★★★</span>
+        <p class="reviews__count">${REVIEWS_SUMMARY.count} reseñas en ${REVIEWS_SUMMARY.sourceLabel}</p>
+      </div>
+    `;
+  }
+
+  reviewsListEl.innerHTML = REVIEWS.map((review) => `
+    <blockquote class="review-card fade-in">
+      <p>&ldquo;${review.text}&rdquo;</p>
+      <footer>${review.source}</footer>
+    </blockquote>
+  `).join("");
+}
 
 // --------------------------------------------------------------------------
 // Animaciones fade-in al hacer scroll
