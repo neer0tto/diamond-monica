@@ -855,6 +855,23 @@ img { max-width: 100%; display: block; }
   margin-bottom: 16px;
 }
 
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer__diamond {
+  width: 20px;
+  height: auto;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
 .footer__col p {
   color: var(--text-soft);
   font-size: 0.9rem;
@@ -1087,4 +1104,46 @@ img { max-width: 100%; display: block; }
 .reviews-badge__label {
   color: var(--text-soft);
   font-size: 18px;
+}
+
+/* ==========================================================================
+   MOTIVO DE DIAMANTE — separador entre secciones y viñetas de lista
+   ========================================================================== */
+.section-diamond {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.section-diamond svg {
+  width: 15px;
+  height: auto;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* Lista con viñetas en forma de diamante, lista para usar en cuanto haya
+   contenido con viñetas (características del negocio, incluidos de un
+   servicio, etc.). No se aplica todavía a ningún elemento existente. */
+.diamond-list {
+  list-style: none;
+}
+
+.diamond-list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.diamond-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
