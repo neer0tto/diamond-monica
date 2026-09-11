@@ -995,7 +995,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 11px;
+  padding: 8px 14px;
   background: rgba(23, 20, 18, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1004,7 +1004,7 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1;
   text-decoration: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -1032,5 +1032,5 @@ img { max-width: 100%; display: block; }
 
 .reviews-badge__label {
   color: var(--text-soft);
-  font-size: 11px;
+  font-size: 12px;
 }
