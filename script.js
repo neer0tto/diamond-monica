@@ -376,21 +376,19 @@ const reviewsListEl = document.getElementById("reviewsList");
 
 if (reviewsListEl && typeof REVIEWS !== "undefined") {
   if (reviewsSummaryEl && typeof REVIEWS_SUMMARY !== "undefined") {
-    reviewsSummaryEl.innerHTML = `
-      <span class="reviews__score">${REVIEWS_SUMMARY.score}</span>
-      <div>
-        <span class="reviews__stars" aria-hidden="true">★★★★★</span>
-        <p class="reviews__count">${REVIEWS_SUMMARY.count} reseñas en ${REVIEWS_SUMMARY.sourceLabel}</p>
-      </div>
-    `;
+    reviewsSummaryEl.textContent = `⭐ ${REVIEWS_SUMMARY.score} · ${REVIEWS_SUMMARY.count} reseñas en ${REVIEWS_SUMMARY.sourceLabel}`;
   }
 
-  reviewsListEl.innerHTML = REVIEWS.map((review) => `
-    <blockquote class="review-card fade-in">
-      <p>&ldquo;${review.text}&rdquo;</p>
-      <footer>${review.source}</footer>
-    </blockquote>
-  `).join("");
+  reviewsListEl.innerHTML = REVIEWS.map((review) => {
+    const stars = "★".repeat(review.estrellas) + "☆".repeat(5 - review.estrellas);
+    return `
+      <blockquote class="review-card fade-in">
+        <div class="review-card__stars" aria-hidden="true">${stars}</div>
+        <p class="review-card__text">&ldquo;${review.texto}&rdquo;</p>
+        <footer class="review-card__name">${review.nombre}</footer>
+      </blockquote>
+    `;
+  }).join("");
 }
 
 // --------------------------------------------------------------------------
