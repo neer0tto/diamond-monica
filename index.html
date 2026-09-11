@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=20260911">
+<link rel="stylesheet" href="estilos.css?v=20260911b">
 </head>
 <body>
 
@@ -191,17 +191,20 @@
     </div>
 
     <div class="footer__col footer__map fade-in">
-      <iframe
-        title="Ubicación Diamond Beauty en Alcobendas"
-        src="https://www.google.com/maps?q=Calle+de+Santiago+Ap%C3%B3stol+7,+28100+Alcobendas,+Madrid&output=embed"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+      <div class="footer__map-frame">
+        <iframe
+          title="Ubicación Diamond Beauty en Alcobendas"
+          src="https://www.google.com/maps?q=Calle+de+Santiago+Ap%C3%B3stol+7,+28100+Alcobendas,+Madrid&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=Calle+de+Santiago+Apostol+7+Alcobendas" target="_blank" rel="noopener" class="btn btn--ghost footer__map-cta">Cómo llegar</a>
     </div>
   </div>
   <p class="footer__legal">&copy; <span id="year"></span> Diamond Beauty. Todos los derechos reservados.</p>
 </footer>
 
-<script src="script.js?v=20260911"></script>
+<script src="script.js?v=20260911b"></script>
 </body>
 </html>

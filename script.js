@@ -146,12 +146,14 @@ const nav = document.getElementById("nav");
 
 navToggle.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("is-open");
+  navToggle.classList.toggle("is-open", isOpen);
   navToggle.setAttribute("aria-expanded", isOpen);
 });
 
 nav.querySelectorAll(".nav__link").forEach((link) => {
   link.addEventListener("click", () => {
     nav.classList.remove("is-open");
+    navToggle.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
   });
 });
