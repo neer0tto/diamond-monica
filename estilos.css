@@ -905,6 +905,11 @@ img { max-width: 100%; display: block; }
   .hero__bg {
     background-position: 62% center;
   }
+
+  .team__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
 }
 
 @media (max-width: 480px) {
