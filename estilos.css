@@ -630,6 +630,36 @@ img { max-width: 100%; display: block; }
   white-space: nowrap;
 }
 
+.service-row__book {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -8px -6px -8px 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.service-row__book svg {
+  width: 16px;
+  height: 16px;
+}
+
+.service-row__book:hover {
+  background: rgba(217, 149, 138, 0.12);
+}
+
+.service-row__book:active {
+  transform: scale(0.9);
+}
+
 /* ==========================================================================
    RESERVAR
    ========================================================================== */

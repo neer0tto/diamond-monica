@@ -183,6 +183,24 @@ function zoneMinPrice(zoneKey) {
   return formatPrice(Math.min(...values));
 }
 
+// Relaciona cada servicio con la especialidad de TEAM que lo cubre, para
+// poder filtrar el desplegable de "Empleada" al reservar desde una fila.
+// Inferido a partir de zona/categoría: revisar con el cliente si alguna
+// asignación no es correcta (ej. quién hace exactamente "Limpieza facial").
+function serviceSpecialty(zoneKey, item) {
+  if (zoneKey === "manos" || zoneKey === "pies") return "Uñas";
+  if (zoneKey === "cejasPestanas") {
+    return item.name.toLowerCase().includes("ceja") ? "Depilación y cejas" : "Pestañas";
+  }
+  if (zoneKey === "rostro") {
+    return item.name.toLowerCase().includes("depilación") ? "Depilación y cejas" : "";
+  }
+  if (zoneKey === "cuerpo") {
+    return item.group === "Depilación con cera" ? "Depilación y cejas" : "Masajes";
+  }
+  return "";
+}
+
 function renderRows(zoneKey) {
   const items = SERVICES[zoneKey].filter((item) => {
     if (zoneKey !== "manos" || activeCategory === null) return true;
@@ -204,6 +222,12 @@ function renderRows(zoneKey) {
         <span class="service-row__meta">
           <span class="service-row__price">${item.price}</span>
           <span class="service-row__duration">${item.duration}</span>
+          <button type="button" class="service-row__book" data-service="${item.name}" data-specialty="${serviceSpecialty(zoneKey, item)}" aria-label="Reservar ${item.name}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2"/>
+              <path d="M8 3v4M16 3v4M3 10h18"/>
+            </svg>
+          </button>
         </span>
       </div>
     `;
@@ -316,6 +340,26 @@ if (servicioSelect && empleadaSelect) {
     option.value = member.name;
     option.textContent = `${member.name} — ${member.specialty}`;
     empleadaSelect.appendChild(option);
+  });
+
+  // Al reservar desde una fila de servicio, deja visibles en "Empleada"
+  // solo a quienes tienen esa especialidad (o todas si no hay match claro).
+  function filterEmpleadaOptions(specialty) {
+    Array.from(empleadaSelect.options).forEach((opt) => {
+      if (opt.value === "Sin preferencia") return;
+      const member = TEAM.find((m) => m.name === opt.value);
+      opt.hidden = Boolean(specialty) && member.specialty !== specialty;
+    });
+    empleadaSelect.value = "Sin preferencia";
+  }
+
+  accordionEl?.addEventListener("click", (event) => {
+    const bookBtn = event.target.closest(".service-row__book");
+    if (!bookBtn) return;
+
+    servicioSelect.value = bookBtn.dataset.service;
+    filterEmpleadaOptions(bookBtn.dataset.specialty);
+    document.getElementById("reservar").scrollIntoView({ behavior: "smooth" });
   });
 }
 
