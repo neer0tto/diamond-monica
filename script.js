@@ -139,26 +139,6 @@ const TEAM = [
 ];
 
 // --------------------------------------------------------------------------
-// Menú móvil
-// --------------------------------------------------------------------------
-const navToggle = document.getElementById("navToggle");
-const nav = document.getElementById("nav");
-
-navToggle.addEventListener("click", () => {
-  const isOpen = nav.classList.toggle("is-open");
-  navToggle.classList.toggle("is-open", isOpen);
-  navToggle.setAttribute("aria-expanded", isOpen);
-});
-
-nav.querySelectorAll(".nav__link").forEach((link) => {
-  link.addEventListener("click", () => {
-    nav.classList.remove("is-open");
-    navToggle.classList.remove("is-open");
-    navToggle.setAttribute("aria-expanded", "false");
-  });
-});
-
-// --------------------------------------------------------------------------
 // Barra de navegación inferior — mide su alto real (varía según cómo
 // rendericen las fuentes/safe-area en cada dispositivo) para que el badge
 // de reseñas y el padding del body se ajusten con el valor exacto, en vez

@@ -134,7 +134,8 @@ img { max-width: 100%; display: block; }
   right: 0;
   z-index: 100;
   background: rgba(13, 11, 10, 0.85);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -176,6 +177,26 @@ img { max-width: 100%; display: block; }
   color: var(--accent);
 }
 
+.logo__monogram {
+  display: none;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--text);
+}
+
+.header__diamond {
+  display: none;
+  width: 16px;
+  height: auto;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(217, 149, 138, 0.4));
+}
+
 .nav__list {
   display: flex;
   gap: 40px;
@@ -215,35 +236,6 @@ img { max-width: 100%; display: block; }
 
 .nav__link.is-current::after {
   transform: scaleX(1);
-}
-
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-}
-
-.nav-toggle span {
-  width: 24px;
-  height: 1px;
-  background: var(--text);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-toggle.is-open span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.nav-toggle.is-open span:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-toggle.is-open span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
 }
 
 /* ==========================================================================
@@ -954,56 +946,26 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 720px) {
+  /* La navegación horizontal se oculta: la cubre la barra inferior fija. */
   .nav {
-    position: fixed;
-    top: 76px;
-    left: 0;
-    right: 0;
-    background: rgba(13, 11, 10, 0.97);
-    border-bottom: 1px solid var(--line);
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: none;
   }
 
-  .nav.is-open {
-    grid-template-rows: 1fr;
-    box-shadow: 0 14px 32px -14px rgba(217, 149, 138, 0.2), 0 1px 0 rgba(217, 149, 138, 0.12);
+  .header__inner {
+    height: 46px;
   }
 
-  .nav__list {
-    flex-direction: column;
-    gap: 0;
-    padding: 8px 24px 20px;
-    min-height: 0;
-    overflow: hidden;
+  .logo__placeholder,
+  .logo__text {
+    display: none;
   }
 
-  .nav__list li {
-    border-bottom: 1px solid var(--line);
-    opacity: 0;
-    transform: translateY(-6px);
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .nav.is-open .nav__list li {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .nav.is-open .nav__list li:nth-child(1) { transition-delay: 0ms; }
-  .nav.is-open .nav__list li:nth-child(2) { transition-delay: 50ms; }
-  .nav.is-open .nav__list li:nth-child(3) { transition-delay: 100ms; }
-  .nav.is-open .nav__list li:nth-child(4) { transition-delay: 150ms; }
-  .nav.is-open .nav__list li:nth-child(5) { transition-delay: 200ms; }
-
-  .nav__link {
+  .logo__monogram {
     display: block;
-    padding: 16px 0;
   }
 
-  .nav-toggle {
-    display: flex;
+  .header__diamond {
+    display: block;
   }
 
   /* Deja sitio para la barra de navegación inferior fija (y para el badge
