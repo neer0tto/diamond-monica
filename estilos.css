@@ -858,6 +858,10 @@ img { max-width: 100%; display: block; }
   width: 100%;
   height: 170px;
   border: 0;
+  /* El embed simple de Google Maps (output=embed) no tiene un modo oscuro
+     real sin API key + estilos JS; se simula invirtiendo colores para que
+     combine con la paleta oscura y el marco resalte más por contraste. */
+  filter: invert(90%) hue-rotate(180deg) brightness(0.95) contrast(0.9);
 }
 
 .footer__map-cta {
