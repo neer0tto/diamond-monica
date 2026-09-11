@@ -415,6 +415,28 @@ function observeFadeIns() {
 observeFadeIns();
 
 // --------------------------------------------------------------------------
+// Badge flotante de reseñas — se atenúa mientras se hace scroll para no
+// taparle texto o botones al usuario, y vuelve a aparecer al detenerse.
+// --------------------------------------------------------------------------
+const reviewsBadge = document.querySelector(".reviews-badge");
+
+if (reviewsBadge) {
+  let scrollTimeout;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      reviewsBadge.classList.add("is-scrolling");
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        reviewsBadge.classList.remove("is-scrolling");
+      }, 400);
+    },
+    { passive: true }
+  );
+}
+
+// --------------------------------------------------------------------------
 // Año del footer
 // --------------------------------------------------------------------------
 document.getElementById("year").textContent = new Date().getFullYear();

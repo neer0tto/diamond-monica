@@ -983,3 +983,54 @@ img { max-width: 100%; display: block; }
     font-size: clamp(2rem, 9vw, 2.6rem);
   }
 }
+
+/* ==========================================================================
+   BADGE FLOTANTE DE RESEÑAS
+   ========================================================================== */
+.reviews-badge {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  background: rgba(23, 20, 18, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0.5px solid rgba(217, 149, 138, 0.4);
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1;
+  text-decoration: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reviews-badge:hover {
+  transform: translateY(-2px);
+}
+
+.reviews-badge.is-scrolling {
+  opacity: 0.12;
+  transition: opacity 0.15s ease;
+}
+
+.reviews-badge__star {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.reviews-badge__score {
+  font-weight: 500;
+}
+
+.reviews-badge__label {
+  color: var(--text-soft);
+  font-size: 11px;
+}
