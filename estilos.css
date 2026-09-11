@@ -995,6 +995,7 @@ img { max-width: 100%; display: block; }
   .nav.is-open .nav__list li:nth-child(2) { transition-delay: 50ms; }
   .nav.is-open .nav__list li:nth-child(3) { transition-delay: 100ms; }
   .nav.is-open .nav__list li:nth-child(4) { transition-delay: 150ms; }
+  .nav.is-open .nav__list li:nth-child(5) { transition-delay: 200ms; }
 
   .nav__link {
     display: block;
@@ -1003,6 +1004,16 @@ img { max-width: 100%; display: block; }
 
   .nav-toggle {
     display: flex;
+  }
+
+  /* Deja sitio para la barra de navegación inferior fija (y para el badge
+     de reseñas que queda encima de ella), para que no tapen el final real
+     de la página. --fixed-bottom-clearance lo mide script.js porque varía
+     según cómo rendericen las fuentes y el área segura en cada
+     dispositivo; 56px es solo el valor de respaldo antes de que corra el
+     JS. */
+  body {
+    padding-bottom: var(--fixed-bottom-clearance, 56px);
   }
 }
 
@@ -1106,6 +1117,14 @@ img { max-width: 100%; display: block; }
   font-size: 18px;
 }
 
+@media (max-width: 720px) {
+  /* Encima de la barra de navegación inferior, con un margen visible,
+     en vez de pegado al borde de la pantalla. */
+  .reviews-badge {
+    bottom: calc(var(--bottom-nav-height, 56px) + 12px);
+  }
+}
+
 /* ==========================================================================
    MOTIVO DE DIAMANTE — separador entre secciones y viñetas de lista
    ========================================================================== */
@@ -1146,4 +1165,63 @@ img { max-width: 100%; display: block; }
   height: 8px;
   background: var(--accent);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* ==========================================================================
+   BARRA DE NAVEGACIÓN INFERIOR (solo móvil)
+   Convención de z-index del sitio: contenido normal sin z-index > badge de
+   reseñas (90) > barra inferior (95) > header (100). Cualquier modal futuro
+   debería usar 200+ para quedar siempre por encima de todo esto.
+   ========================================================================== */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 95;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(13, 11, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  padding: 8px 4px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bottom-nav.is-hidden {
+  transform: translateY(100%);
+}
+
+.bottom-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  padding: 4px 2px;
+  color: var(--text-soft);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.bottom-nav__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bottom-nav__link.is-current {
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .bottom-nav {
+    display: flex;
+  }
 }

@@ -159,6 +159,33 @@ nav.querySelectorAll(".nav__link").forEach((link) => {
 });
 
 // --------------------------------------------------------------------------
+// Barra de navegación inferior — mide su alto real (varía según cómo
+// rendericen las fuentes/safe-area en cada dispositivo) para que el badge
+// de reseñas y el padding del body se ajusten con el valor exacto, en vez
+// de un número fijo adivinado. También mide el hueco total que ocupan
+// barra + badge juntos, para que el body deje sitio a los dos y el pie de
+// página no quede tapado al llegar al final del scroll.
+// --------------------------------------------------------------------------
+const bottomNav = document.getElementById("bottomNav");
+const reviewsBadgeEl = document.querySelector(".reviews-badge");
+
+if (bottomNav) {
+  const updateBottomOffsets = () => {
+    const navHeight = bottomNav.getBoundingClientRect().height;
+    document.documentElement.style.setProperty("--bottom-nav-height", `${navHeight}px`);
+
+    const isMobile = window.matchMedia("(max-width: 720px)").matches;
+    const clearance = reviewsBadgeEl && isMobile
+      ? window.innerHeight - reviewsBadgeEl.getBoundingClientRect().top
+      : navHeight;
+    document.documentElement.style.setProperty("--fixed-bottom-clearance", `${clearance}px`);
+  };
+  updateBottomOffsets();
+  window.addEventListener("resize", updateBottomOffsets);
+  window.addEventListener("orientationchange", updateBottomOffsets);
+}
+
+// --------------------------------------------------------------------------
 // Acordeón de servicios (cabecera por zona + filas de servicio)
 // --------------------------------------------------------------------------
 const accordionEl = document.getElementById("servicesAccordion");
@@ -410,6 +437,17 @@ if (bookingForm) {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, "_blank");
   });
+
+  // Oculta la barra de navegación inferior mientras se escribe, para que
+  // el teclado del móvil no la deje tapando el campo activo.
+  if (bottomNav) {
+    bookingForm.addEventListener("focusin", () => {
+      bottomNav.classList.add("is-hidden");
+    });
+    bookingForm.addEventListener("focusout", () => {
+      bottomNav.classList.remove("is-hidden");
+    });
+  }
 }
 
 // --------------------------------------------------------------------------
