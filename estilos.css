@@ -1189,54 +1189,74 @@ img { max-width: 100%; display: block; }
 }
 
 /* ==========================================================================
-   GALERÍA DE SERVICIOS (reseñas.html)
+   GALERÍA DE SERVICIOS (reseñas.html) — acordeón anidado:
+   categoría (igual que el acordeón de servicios) -> fila de servicio ->
+   fotos placeholder. Reutiliza .accordion/.accordion-item/.accordion-header/
+   .accordion-chevron ya definidos para la sección de servicios.
    ========================================================================== */
 .gallery {
   padding: 100px 0;
 }
 
-.gallery__category {
-  margin-bottom: 12px;
+.gallery-service {
+  border-bottom: 1px solid #232019;
 }
 
-.gallery__category-title {
-  text-align: center;
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
+.gallery-service:last-child {
+  border-bottom: none;
+}
+
+.gallery-service__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.gallery-service__name {
+  font-size: 0.85rem;
   color: var(--text);
-  margin-bottom: 24px;
 }
 
-.gallery__grid {
+.gallery-service .accordion-chevron {
+  width: 13px;
+  height: 13px;
+}
+
+.gallery-service.is-open .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.gallery-service__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-service.is-open .gallery-service__panel {
+  grid-template-rows: 1fr;
+}
+
+.gallery-service__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.gallery-service.is-open .gallery-service__panel-inner {
+  padding-bottom: 14px;
+}
+
+.gallery-service__photos {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-@media (min-width: 600px) {
-  .gallery__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 900px) {
-  .gallery__grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.gallery__item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.gallery__item-name {
-  text-align: center;
-  font-size: 0.78rem;
-  color: var(--text);
-  line-height: 1.3;
+  gap: 10px;
+  padding-top: 4px;
 }
 
 .gallery__placeholder {
@@ -1253,12 +1273,12 @@ img { max-width: 100%; display: block; }
 }
 
 .gallery__placeholder-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 .gallery__placeholder-label {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-soft);

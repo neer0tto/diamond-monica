@@ -454,39 +454,95 @@ if (reviewsListEl && typeof REVIEWS !== "undefined") {
 }
 
 // --------------------------------------------------------------------------
-// Galería de servicios (página reseñas.html) — reutiliza SERVICES/ZONE_META,
-// los mismos datos que la sección de servicios de index.html.
+// Galería de servicios (página reseñas.html) — acordeón anidado
+// (categoría -> fila de servicio -> fotos), reutilizando SERVICES/ZONE_META
+// y el mismo lenguaje visual (.accordion*) que la sección de servicios.
 // --------------------------------------------------------------------------
 const galleryEl = document.getElementById("galleryContent");
+let galleryOpenZone = null;
 
-if (galleryEl) {
+function placeholderPhoto() {
+  return `
+    <!-- PLACEHOLDER: sustituir por foto real cuando el cliente la envíe -->
+    <div class="gallery__placeholder">
+      <svg class="gallery__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 8h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+        <circle cx="12" cy="13" r="4"/>
+      </svg>
+      <span class="gallery__placeholder-label">Foto pendiente</span>
+    </div>
+  `;
+}
+
+function renderGallery() {
   galleryEl.innerHTML = ZONE_META.map((zone, index) => {
-    const itemsHtml = SERVICES[zone.key].map((item) => `
-      <div class="gallery__item">
-        <span class="gallery__item-name">${item.name}</span>
-        <!-- PLACEHOLDER: sustituir por foto real del servicio cuando el cliente la envíe -->
-        <div class="gallery__placeholder">
-          <svg class="gallery__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 8h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
-            <circle cx="12" cy="13" r="4"/>
+    const isOpen = zone.key === galleryOpenZone;
+
+    const servicesHtml = SERVICES[zone.key].map((item) => `
+      <div class="gallery-service" data-service="${item.name}">
+        <button type="button" class="gallery-service__header" aria-expanded="false">
+          <span class="gallery-service__name">${item.name}</span>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
-          <span class="gallery__placeholder-label">Foto pendiente</span>
+        </button>
+        <div class="gallery-service__panel">
+          <div class="gallery-service__panel-inner">
+            <div class="gallery-service__photos">
+              ${placeholderPhoto()}
+              ${placeholderPhoto()}
+            </div>
+          </div>
         </div>
       </div>
     `).join("");
+
+    const item = `
+      <div class="accordion-item${isOpen ? " is-open" : ""}" data-zone="${zone.key}">
+        <button type="button" class="accordion-header" aria-expanded="${isOpen}">
+          <span class="accordion-header__left">
+            ${zone.icon}
+            <span class="accordion-header__title">${zone.label}</span>
+          </span>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="accordion-panel">
+          <div class="accordion-panel__inner">${servicesHtml}</div>
+        </div>
+      </div>
+    `;
 
     const separator = index < ZONE_META.length - 1
       ? `<div class="section-diamond" aria-hidden="true"><svg viewBox="0 0 100 130"><path d="M25 28 L75 28 L96 54 L50 126 L4 54 Z"/><path d="M4 54 L96 54"/></svg></div>`
       : "";
 
-    return `
-      <div class="gallery__category fade-in">
-        <h3 class="gallery__category-title">${zone.label}</h3>
-        <div class="gallery__grid">${itemsHtml}</div>
-      </div>
-      ${separator}
-    `;
+    return item + separator;
   }).join("");
+}
+
+if (galleryEl) {
+  renderGallery();
+
+  galleryEl.addEventListener("click", (event) => {
+    const serviceHeader = event.target.closest(".gallery-service__header");
+    if (serviceHeader) {
+      const serviceItem = serviceHeader.closest(".gallery-service");
+      const willOpen = !serviceItem.classList.contains("is-open");
+      serviceItem.classList.toggle("is-open", willOpen);
+      serviceHeader.setAttribute("aria-expanded", willOpen);
+      return;
+    }
+
+    const categoryHeader = event.target.closest(".accordion-header");
+    if (!categoryHeader) return;
+
+    const categoryItem = categoryHeader.closest(".accordion-item");
+    const zoneKey = categoryItem.dataset.zone;
+    galleryOpenZone = galleryOpenZone === zoneKey ? null : zoneKey;
+    renderGallery();
+  });
 }
 
 // --------------------------------------------------------------------------
