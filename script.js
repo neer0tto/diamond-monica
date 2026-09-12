@@ -454,6 +454,42 @@ if (reviewsListEl && typeof REVIEWS !== "undefined") {
 }
 
 // --------------------------------------------------------------------------
+// Galería de servicios (página reseñas.html) — reutiliza SERVICES/ZONE_META,
+// los mismos datos que la sección de servicios de index.html.
+// --------------------------------------------------------------------------
+const galleryEl = document.getElementById("galleryContent");
+
+if (galleryEl) {
+  galleryEl.innerHTML = ZONE_META.map((zone, index) => {
+    const itemsHtml = SERVICES[zone.key].map((item) => `
+      <div class="gallery__item">
+        <span class="gallery__item-name">${item.name}</span>
+        <!-- PLACEHOLDER: sustituir por foto real del servicio cuando el cliente la envíe -->
+        <div class="gallery__placeholder">
+          <svg class="gallery__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 8h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <span class="gallery__placeholder-label">Foto pendiente</span>
+        </div>
+      </div>
+    `).join("");
+
+    const separator = index < ZONE_META.length - 1
+      ? `<div class="section-diamond" aria-hidden="true"><svg viewBox="0 0 100 130"><path d="M25 28 L75 28 L96 54 L50 126 L4 54 Z"/><path d="M4 54 L96 54"/></svg></div>`
+      : "";
+
+    return `
+      <div class="gallery__category fade-in">
+        <h3 class="gallery__category-title">${zone.label}</h3>
+        <div class="gallery__grid">${itemsHtml}</div>
+      </div>
+      ${separator}
+    `;
+  }).join("");
+}
+
+// --------------------------------------------------------------------------
 // Animaciones fade-in al hacer scroll
 // --------------------------------------------------------------------------
 const observer = new IntersectionObserver(
