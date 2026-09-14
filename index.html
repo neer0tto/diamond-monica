@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilos.css?v=20260912a">
+<link rel="stylesheet" href="estilos.css?v=20260914a">
 </head>
 <body>
 
@@ -115,7 +115,7 @@
     <div class="container">
       <p class="section__eyebrow fade-in">Reservar</p>
       <h2 class="section__title fade-in">Pide tu cita</h2>
-      <p class="booking__hint fade-in">Completa el formulario y te redirigiremos a WhatsApp con tu solicitud lista para enviar.</p>
+      <p class="booking__hint fade-in">Completa el formulario para reservar tu cita, o escríbenos directamente por WhatsApp.</p>
 
       <form id="bookingForm" class="booking__form fade-in">
         <div class="form__row">
@@ -159,7 +159,9 @@
           <input type="time" id="hora" name="hora" required>
         </div>
 
-        <button type="submit" class="btn btn--gold booking__submit">Reservar por WhatsApp</button>
+        <button type="submit" class="btn btn--gold booking__submit">Reservar cita</button>
+        <p id="bookingFormStatus" class="booking__form-status" role="status" aria-live="polite"></p>
+        <a href="#" id="whatsappFallback" class="btn btn--ghost booking__whatsapp" target="_blank" rel="noopener">O escríbenos por WhatsApp</a>
       </form>
     </div>
   </section>
@@ -248,6 +250,6 @@
   </a>
 </nav>
 
-<script src="script.js?v=20260912a"></script>
+<script src="script.js?v=20260914a"></script>
 </body>
 </html>

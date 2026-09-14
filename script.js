@@ -390,15 +390,116 @@ if (teamGrid) {
 }
 
 // --------------------------------------------------------------------------
-// Formulario de reserva → WhatsApp
-// TODO: sustituir por integración con Supabase cuando esté listo el calendario automático
+// IDs de Supabase para servicios y empleadas — deben mantenerse en sync con
+// las tablas "services"/"staff" si el catálogo cambia ahí. Se usan para
+// traducir el nombre elegido en el formulario al UUID que espera la Edge
+// Function "crear-reserva".
 // --------------------------------------------------------------------------
+const SUPABASE_SERVICE_IDS = {
+  "Manicura tradicional + cutícula": "c13b011a-52ba-49b3-a037-b13016fd3a31",
+  "Manicura semipermanente": "cff548af-979f-4065-89a1-185867966a2c",
+  "Esmaltado tradicional": "8a330db6-3665-4eaa-8b5d-3f8e46691585",
+  "Manicura francesa": "127cda8c-fe1a-4fc0-b0aa-6010f80421c5",
+  "Manicura infantil": "04301720-4b9e-4d49-8fb1-957d8edcc177",
+  "Manicura con refuerzo color": "8f02e7a4-2d56-439f-9d8b-5d4fbc5a9e1c",
+  "Retirado de semipermanente": "cdf11741-a6e3-4956-91f3-f0b3d68049a5",
+  "Base rubber": "ce33018f-c229-49ee-bf7d-e3d1f061ca1f",
+  "Uñas soft gel": "f0cb14fe-50c5-4371-bad5-65019763df43",
+  "Relleno de soft gel": "622a719a-6a5a-42eb-8113-6bd0431b2d49",
+  "Uñas acrílicas con TIP": "57e64c77-adad-4a32-9684-72600b010f0a",
+  "Uñas acrílicas extra largas": "11d112c3-7592-4576-b151-85dfbda532da",
+  "Uñas acrygel": "c999566b-da7f-46ce-a03b-398be3dcc860",
+  "Acrílicos babyboomer": "2c9f0f70-11b0-449a-8f47-e4ea40aa0f68",
+  "Uñas acrílicas con molde": "c562ead5-2ec5-4340-805a-da9f2ee50ef4",
+  "Relleno de uñas": "5f2abd43-e57f-48ae-a7b7-b572213c6062",
+  "Baño acrílico": "067d2d89-7612-4930-9ed4-0086d67330be",
+  "Encapsulados en acrílico": "0ef576d7-5b26-4c5c-91b6-90df0468d69f",
+  "Retirada de uñas acrílicas": "a2ef97db-8698-4585-b501-95fa2861ba81",
+  "Decoración de uñas": "f3972700-d66f-496c-ac98-dd8b7cadd225",
+  "Reconstrucción de una uña": "1e14a2ec-fe0f-487c-9f8b-1720d28b93d3",
+  "Diseño 3D": "c2e32a12-f60d-4bdb-925a-3a411074118b",
+
+  "Esmaltado en pies": "8a4724b8-0d91-4a87-9886-d7197b2a3258",
+  "Cortar uñas": "ab631f33-9e2b-4275-885f-6405fcb48f3b",
+  "Pedicura SPA": "e3068e8c-ac6f-4093-8d33-ea1e52f6492c",
+  "Pedicura SPA sin esmaltado": "d15e2013-48fd-49d1-930d-54b01f1dc16b",
+  "Combo manicura + pedicura": "1e287769-a16f-4a12-83c0-7718a89376a0",
+
+  "Depilación cejas hilo": "b4850c30-3822-497c-8ad5-c614fc166609",
+  "Depilación cejas cera": "b0f7d43b-9f30-489b-a0fa-721f7b972c2d",
+  "Laminado de cejas": "09bdeb71-90c3-4b91-8311-357a96cc0516",
+  "Diseño cejas henna": "a79d77e5-f361-49c5-b29c-2f3fedf58341",
+  "Cejas henna": "27a89d66-0e15-47d5-bbcb-c67b0f016eb8",
+  "Lifting de pestañas": "88595265-3517-4a22-afb4-b9f9637aeec7",
+  "Pelo a pelo": "0fd32d0b-2b75-4483-9b39-a03468ce7b44",
+  "Extensión de pestañas 2D": "2c6e038b-c37f-4409-a7b3-1ce3069a5e9e",
+  "Extensión de pestañas 3D": "2e084f86-8ec3-4cd0-bd75-07c66e7f49bf",
+  "Extensión de pestañas 4D": "006db297-bc94-494c-b8cd-1933828b9523",
+  "Extensión de pestañas 5D": "69dc08de-c0d4-4653-b600-b6c50571d40e",
+  "Extensión de pestañas 6D": "0c6de2d2-d535-4e69-a4a5-b2793ce41a0c",
+  "Extensión de pestañas 7D": "b4ea6f19-6cf2-4a13-b22b-0c711beb860f",
+  "Volumen ruso": "697e222c-74e5-4c9d-b75e-ddcbefaa0845",
+  "Relleno de pestañas": "32e57e70-97a2-4f1e-9938-797c02a7f21c",
+
+  "Limpieza facial": "39100a9c-949a-4832-9fd0-4c08c71d7eaf",
+  "Depilación hilo labio": "6f2e1247-2ebc-4032-b892-fae662b20100",
+  "Depilación hilo facial": "d8eb5251-2174-40ec-a2f4-55cb75c1ea15",
+  "Depilación cera cara": "b934e638-9542-4a88-bddd-3b1c7eaec518",
+  "Depilación cera barbilla": "c80387a0-0166-4f25-bbbc-9ad5af0a92a2",
+
+  "Medias piernas": "be445e17-7238-4948-afbf-6010927d10a9",
+  "Pierna entera": "1d8c1c74-64cb-428d-b378-062563afe57b",
+  "Brazo entero": "0b589e83-0c8b-4fdf-a682-38a5d2775465",
+  "Medio brazo": "0ccd8283-6702-40d6-9b33-4471cd0055f9",
+  "Axilas": "80494e0d-9307-4260-9176-2732f5378698",
+  "Ingles": "24e10d45-22b0-499b-b1ff-476508c447c8",
+  "Brasileña": "39a7e4b6-6306-4d97-a470-f3ec2fb23d3d",
+  "Espalda": "7e199996-ad6d-4f1b-ba0d-2ae355761bd9",
+  "Glúteo": "3a5945ef-061e-493d-9d91-467d14b1120a",
+  "Pecho": "afdf5d19-c20d-459c-985c-9a3bc4bacb49",
+  "Completa (ingles + perianal + brasileña)": "2d5febf4-9fcd-4053-ba26-18c8a0567720",
+  "Maderoterapia": "da2ed7a6-a9b6-47da-b430-40a9659eb7af",
+  "Masaje reductor": "be45ae96-7756-4961-a958-41fb9085bf3f",
+  "Masaje circulatorio": "c6d3dc7f-1f87-4615-b7b6-b7e89b7ebc84",
+  "Masaje descontracturante": "2d669166-efad-418c-b6e7-687a6037656a",
+  "Quiromasaje": "4145054e-13d5-467d-aa24-bb6bb804af94",
+  "Masaje linfático": "33a7dc2a-1668-40b3-94e5-50d6a71d7928",
+  "Presoterapia": "8dc5061d-c142-4380-83e6-033f3e13ec28",
+};
+
+const SUPABASE_STAFF_IDS = {
+  "Irma": "cff0a909-6ba9-4d69-8ef1-41f2dbf3ecd4",
+  "Daniela": "7ac59f4d-60d7-421d-ba76-510d6bbffd29",
+  "Dori": "65a8cba1-8c0e-4f3b-9a9b-e78c8b93db57",
+  "Lina Rojas": "ba3ffaea-58d1-468b-82b5-f2a896a60d74",
+};
+
+// --------------------------------------------------------------------------
+// Formulario de reserva → Edge Function "crear-reserva" (Supabase). El
+// enlace de WhatsApp se mantiene como alternativa visible, ya que el email
+// de confirmación automático todavía no está activo (falta que el cliente
+// tenga dominio propio verificado en Resend) y así la dueña sigue enterándose
+// de las reservas aunque el email no llegue.
+// --------------------------------------------------------------------------
+const EDGE_FUNCTION_URL = "https://jjwvlggbzcdwcbuyeuky.supabase.co/functions/v1/crear-reserva";
+const SUPABASE_ANON_KEY = "sb_publishable_LKE15EUfevuLDiANK_LmHA_Y6darUox";
+
 const bookingForm = document.getElementById("bookingForm");
 
 if (bookingForm) {
-  bookingForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+  const submitBtn = bookingForm.querySelector(".booking__submit");
+  const statusEl = document.getElementById("bookingFormStatus");
+  const whatsappFallback = document.getElementById("whatsappFallback");
+  const originalBtnLabel = submitBtn.textContent;
 
+  function setBookingStatus(message, type) {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.classList.remove("is-error", "is-success");
+    if (type) statusEl.classList.add(type);
+  }
+
+  function buildWhatsAppMessage() {
     const nombre = document.getElementById("nombre").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
     const servicio = servicioSelect.value;
@@ -408,14 +509,75 @@ if (bookingForm) {
 
     const fechaFormateada = fecha
       ? new Date(fecha + "T00:00:00").toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" })
-      : "";
+      : "—";
 
-    const mensaje =
-      `Hola, quiero reservar: ${servicio} con ${empleada} el ${fechaFormateada} a las ${hora}. ` +
-      `Mi nombre es ${nombre}. Mi teléfono es ${telefono}.`;
+    return (
+      `Hola, quiero reservar: ${servicio || "—"} con ${empleada || "Sin preferencia"} el ${fechaFormateada} a las ${hora || "—"}. ` +
+      `Mi nombre es ${nombre || "—"}. Mi teléfono es ${telefono || "—"}.`
+    );
+  }
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
+  if (whatsappFallback) {
+    whatsappFallback.addEventListener("click", (event) => {
+      event.preventDefault();
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage())}`;
+      window.open(url, "_blank");
+    });
+  }
+
+  bookingForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const servicioNombre = servicioSelect.value;
+    const empleadaNombre = empleadaSelect.value;
+    const fecha = document.getElementById("fecha").value;
+    const hora = document.getElementById("hora").value;
+
+    const service_id = SUPABASE_SERVICE_IDS[servicioNombre];
+    const staff_id = empleadaNombre && empleadaNombre !== "Sin preferencia"
+      ? SUPABASE_STAFF_IDS[empleadaNombre]
+      : null;
+
+    if (!service_id) {
+      setBookingStatus("No se pudo enviar, inténtalo de nuevo o escríbenos por WhatsApp", "is-error");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando...";
+    setBookingStatus("", null);
+
+    try {
+      const response = await fetch(EDGE_FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({ nombre, telefono, email, service_id, staff_id, fecha, hora }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        setBookingStatus("¡Cita reservada!", "is-success");
+        bookingForm.reset();
+        empleadaSelect.value = "Sin preferencia";
+      } else if (response.status === 409) {
+        setBookingStatus("Esa hora ya no está disponible, elige otra", "is-error");
+      } else {
+        setBookingStatus("No se pudo enviar, inténtalo de nuevo o escríbenos por WhatsApp", "is-error");
+      }
+    } catch (err) {
+      setBookingStatus("No se pudo enviar, inténtalo de nuevo o escríbenos por WhatsApp", "is-error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnLabel;
+    }
   });
 
   // Oculta la barra de navegación inferior mientras se escribe, para que
