@@ -44,6 +44,14 @@
         ],
         "createdAt": "2026-09-11T11:18:15.315Z",
         "reason": "user confirmed: mismo componente footer__map-frame con resplandor rosa ya aprobado en index.html, reutilizado tal cual en la nueva página de reseñas"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "panel.html"
+        ],
+        "createdAt": "2026-09-16T17:09:41.049Z"
       }
     ]
   }

@@ -1316,3 +1316,106 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.06em;
   color: var(--text-soft);
 }
+
+/* ==========================================================================
+   PANEL DE ADMINISTRACIÓN (panel.html) — página privada sin enlace público,
+   mismo lenguaje visual que el resto de la web pero más simple/funcional.
+   ========================================================================== */
+.panel {
+  padding: 100px 0 120px;
+  max-width: 960px;
+}
+
+.panel__login {
+  max-width: 360px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.panel__login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.panel__login-form .btn {
+  align-self: center;
+}
+
+.panel__content-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.panel__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.panel__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 720px;
+}
+
+.panel__table th,
+.panel__table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.panel__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.panel__table th {
+  color: var(--accent);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  background: var(--surface);
+}
+
+.panel__table tr.is-cancelled {
+  opacity: 0.45;
+}
+
+.panel__table tr.is-cancelled td {
+  text-decoration: line-through;
+}
+
+.panel__table tr.is-cancelled td:last-child,
+.panel__table tr.is-cancelled td:nth-last-child(2) {
+  text-decoration: none;
+}
+
+.panel__cancel-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.panel__cancel-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.panel__cancel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
