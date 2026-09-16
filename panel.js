@@ -4,8 +4,10 @@
 // nunca aquí: este archivo nunca contiene ni compara la contraseña real.
 // ==========================================================================
 
+// SUPABASE_ANON_KEY, HORARIOS_URL, SERVICES, TEAM, SUPABASE_SERVICE_IDS y
+// SUPABASE_STAFF_IDS ya están definidas por script.js (cargado antes que
+// este archivo en panel.html); se reutilizan tal cual, sin redeclararlas.
 const PANEL_FUNCTION_URL = "https://jjwvlggbzcdwcbuyeuky.supabase.co/functions/v1/panel-citas";
-const SUPABASE_ANON_KEY = "sb_publishable_LKE15EUfevuLDiANK_LmHA_Y6darUox";
 
 const loginSection = document.getElementById("panelLogin");
 const contentSection = document.getElementById("panelContent");
@@ -14,9 +16,7 @@ const loginStatusEl = document.getElementById("panelLoginStatus");
 const tableBody = document.getElementById("panelTableBody");
 const listStatusEl = document.getElementById("panelListStatus");
 const refreshBtn = document.getElementById("panelRefresh");
-const yearEl = document.getElementById("panelYear");
-
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+// El año del footer (#year) ya lo fija script.js al cargar la página.
 
 // Se guarda solo en memoria (variable de JS), nunca en localStorage/cookies:
 // se pierde al recargar la página, momento en el que hay que volver a
@@ -78,6 +78,7 @@ function renderAppointments(appointments) {
         <td>${apt.client_phone || "—"}</td>
         <td>${servicio}</td>
         <td>${empleada}</td>
+        <td>${apt.origen === "manual" ? "Manual" : "Web"}</td>
         <td>${isCancelled ? "Cancelada" : "Confirmada"}</td>
         <td>
           <button type="button" class="panel__cancel-btn" data-id="${apt.id}" ${isCancelled ? "disabled" : ""}>
@@ -164,3 +165,206 @@ tableBody.addEventListener("click", async (event) => {
 
   await loadAppointments();
 });
+
+// --------------------------------------------------------------------------
+// Nueva cita manual (llamadas/citas en persona). Reutiliza los selects
+// "servicio"/"empleada" (poblados por script.js con el mismo catálogo que
+// el formulario público) y la Edge Function "horarios-disponibles", para
+// respetar exactamente las mismas reglas de horario/antelación/solapes que
+// una reserva hecha desde la web.
+// --------------------------------------------------------------------------
+const manualToggleBtn = document.getElementById("manualBookingToggle");
+const manualSection = document.getElementById("manualBookingSection");
+const manualForm = document.getElementById("manualBookingForm");
+const manualCancelBtn = document.getElementById("manualBookingCancel");
+const manualStatusEl = document.getElementById("manualBookingStatus");
+const manualServicioSelect = document.getElementById("servicio");
+const manualEmpleadaSelect = document.getElementById("empleada");
+const manualFechaInput = document.getElementById("fecha");
+const manualHoraSelect = document.getElementById("hora");
+const manualHoraHintEl = document.getElementById("horaHint");
+
+if (manualToggleBtn) {
+  manualFechaInput.min = new Date().toLocaleDateString("en-CA");
+
+  function setManualStatus(message, type) {
+    manualStatusEl.textContent = message || "";
+    manualStatusEl.classList.remove("is-error", "is-success");
+    if (type) manualStatusEl.classList.add(type);
+  }
+
+  function setManualHoraHint(text) {
+    if (manualHoraHintEl) manualHoraHintEl.textContent = text || "";
+  }
+
+  function setManualHoraPlaceholder(text) {
+    manualHoraSelect.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.disabled = true;
+    opt.selected = true;
+    opt.textContent = text;
+    manualHoraSelect.appendChild(opt);
+    manualHoraSelect.disabled = true;
+  }
+
+  let manualHorariosRequestId = 0;
+
+  async function refreshManualHorarios() {
+    const fecha = manualFechaInput.value;
+    const servicioNombre = manualServicioSelect.value;
+    const empleadaNombre = manualEmpleadaSelect.value;
+    const service_id = SUPABASE_SERVICE_IDS[servicioNombre];
+    const staff_id = empleadaNombre && empleadaNombre !== "Sin preferencia"
+      ? SUPABASE_STAFF_IDS[empleadaNombre]
+      : null;
+
+    if (!fecha || !service_id) {
+      setManualHoraPlaceholder("Selecciona fecha y servicio");
+      setManualHoraHint("");
+      return;
+    }
+
+    const selectedDay = new Date(`${fecha}T00:00:00`).getDay();
+    if (selectedDay === 0) {
+      setManualHoraPlaceholder("Domingo: cerrado");
+      setManualHoraHint("Los domingos permanecemos cerradas.");
+      return;
+    }
+
+    setManualHoraPlaceholder("Cargando horarios...");
+    setManualHoraHint("");
+
+    const requestId = ++manualHorariosRequestId;
+
+    try {
+      const response = await fetch(HORARIOS_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({ fecha, service_id, staff_id }),
+      });
+
+      if (requestId !== manualHorariosRequestId) return;
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setManualHoraPlaceholder("No se pudieron cargar los horarios");
+        setManualHoraHint("Inténtalo de nuevo.");
+        return;
+      }
+
+      if (!data.slots || data.slots.length === 0) {
+        setManualHoraPlaceholder("Sin horarios disponibles");
+        setManualHoraHint(data.message || "No hay huecos disponibles este día.");
+        return;
+      }
+
+      manualHoraSelect.innerHTML = "";
+      const placeholderOpt = document.createElement("option");
+      placeholderOpt.value = "";
+      placeholderOpt.disabled = true;
+      placeholderOpt.selected = true;
+      placeholderOpt.textContent = "Selecciona una hora";
+      manualHoraSelect.appendChild(placeholderOpt);
+
+      data.slots.forEach((slot) => {
+        const opt = document.createElement("option");
+        opt.value = slot;
+        opt.textContent = slot;
+        manualHoraSelect.appendChild(opt);
+      });
+
+      manualHoraSelect.disabled = false;
+      setManualHoraHint("");
+    } catch (err) {
+      if (requestId !== manualHorariosRequestId) return;
+      setManualHoraPlaceholder("No se pudieron cargar los horarios");
+      setManualHoraHint("Inténtalo de nuevo.");
+    }
+  }
+
+  manualFechaInput.addEventListener("change", refreshManualHorarios);
+  manualServicioSelect.addEventListener("change", refreshManualHorarios);
+  manualEmpleadaSelect.addEventListener("change", refreshManualHorarios);
+
+  function openManualForm() {
+    manualSection.hidden = false;
+    manualToggleBtn.hidden = true;
+  }
+
+  function closeManualForm() {
+    manualSection.hidden = true;
+    manualToggleBtn.hidden = false;
+    manualForm.reset();
+    setManualHoraPlaceholder("Selecciona fecha y servicio");
+    setManualHoraHint("");
+    setManualStatus("", null);
+  }
+
+  manualToggleBtn.addEventListener("click", openManualForm);
+  manualCancelBtn.addEventListener("click", closeManualForm);
+
+  manualForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const client_name = document.getElementById("manualNombre").value.trim();
+    const client_phone = document.getElementById("manualTelefono").value.trim();
+    const servicioNombre = manualServicioSelect.value;
+    const empleadaNombre = manualEmpleadaSelect.value;
+    const fecha = manualFechaInput.value;
+    const hora = manualHoraSelect.value;
+
+    const service_id = SUPABASE_SERVICE_IDS[servicioNombre];
+    const staff_id = empleadaNombre && empleadaNombre !== "Sin preferencia"
+      ? SUPABASE_STAFF_IDS[empleadaNombre]
+      : null;
+
+    if (!client_name || !client_phone) {
+      setManualStatus("Rellena nombre y teléfono.", "is-error");
+      return;
+    }
+    if (!service_id) {
+      setManualStatus("Selecciona un servicio.", "is-error");
+      return;
+    }
+    if (!hora) {
+      setManualStatus("Selecciona una hora disponible.", "is-error");
+      return;
+    }
+
+    const submitBtn = manualForm.querySelector("button[type=submit]");
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Guardando...";
+    setManualStatus("", null);
+
+    const result = await callPanel("create", { client_name, client_phone, service_id, staff_id, fecha, hora });
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+
+    if (result.status === 401) {
+      showLogin("Sesión no válida, vuelve a introducir la contraseña.");
+      return;
+    }
+
+    if (result.status === 409) {
+      setManualStatus("Esa hora ya no está disponible, elige otra.", "is-error");
+      refreshManualHorarios();
+      return;
+    }
+
+    if (!result.ok || !result.data.success) {
+      setManualStatus("No se pudo guardar la cita. Inténtalo de nuevo.", "is-error");
+      return;
+    }
+
+    closeManualForm();
+    await loadAppointments();
+  });
+}

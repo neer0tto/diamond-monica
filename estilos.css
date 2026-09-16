@@ -1419,3 +1419,31 @@ img { max-width: 100%; display: block; }
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+.panel__manual-toggle {
+  display: block;
+  margin: 0 auto 24px;
+}
+
+.panel__manual-form {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.panel__manual-title {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.panel__manual-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
