@@ -130,12 +130,10 @@ const SERVICES = {
   ]
 };
 
-// Especialidades a confirmar con el cliente
 const TEAM = [
-  { name: "Irma", specialty: "Uñas" },
-  { name: "Daniela", specialty: "Pestañas" },
-  { name: "Dori", specialty: "Depilación y cejas" },
-  { name: "Lina Rojas", specialty: "Masajes" }
+  { name: "Irma", specialty: "Manicura, pedicura, depilación y cejas" },
+  { name: "Mónica", specialty: "Pestañas y pedicura" },
+  { name: "Lina", specialty: "Masajes y maderoterapia" }
 ];
 
 // --------------------------------------------------------------------------
@@ -190,22 +188,24 @@ function zoneMinPrice(zoneKey) {
   return formatPrice(Math.min(...values));
 }
 
-// Relaciona cada servicio con la especialidad de TEAM que lo cubre, para
-// poder filtrar el desplegable de "Empleada" al reservar desde una fila.
-// Inferido a partir de zona/categoría: revisar con el cliente si alguna
-// asignación no es correcta (ej. quién hace exactamente "Limpieza facial").
-function serviceSpecialty(zoneKey, item) {
-  if (zoneKey === "manos" || zoneKey === "pies") return "Uñas";
+// Relaciona cada servicio con la(s) empleada(s) que lo cubren, para poder
+// filtrar el desplegable de "Empleada" al reservar desde una fila. Refleja
+// el reparto real (tabla staff_services en Supabase): Irma hace Manos +
+// Combo manicura y pedicura + cejas + Rostro completo + depilación corporal;
+// Mónica hace el resto de Pies + pestañas; Lina hace masajes/maderoterapia.
+function serviceStaffNames(zoneKey, item) {
+  if (zoneKey === "manos") return ["Irma"];
+  if (zoneKey === "pies") {
+    return item.name === "Combo manicura + pedicura" ? ["Irma"] : ["Mónica"];
+  }
   if (zoneKey === "cejasPestanas") {
-    return item.name.toLowerCase().includes("ceja") ? "Depilación y cejas" : "Pestañas";
+    return item.name.toLowerCase().includes("ceja") ? ["Irma"] : ["Mónica"];
   }
-  if (zoneKey === "rostro") {
-    return item.name.toLowerCase().includes("depilación") ? "Depilación y cejas" : "";
-  }
+  if (zoneKey === "rostro") return ["Irma"];
   if (zoneKey === "cuerpo") {
-    return item.group === "Depilación con cera" ? "Depilación y cejas" : "Masajes";
+    return item.group === "Depilación con cera" ? ["Irma"] : ["Lina"];
   }
-  return "";
+  return [];
 }
 
 function renderRows(zoneKey) {
@@ -229,7 +229,7 @@ function renderRows(zoneKey) {
         <span class="service-row__meta">
           <span class="service-row__price">${item.price}</span>
           <span class="service-row__duration">${item.duration}</span>
-          <button type="button" class="service-row__book" data-service="${item.name}" data-specialty="${serviceSpecialty(zoneKey, item)}" aria-label="Reservar ${item.name}">
+          <button type="button" class="service-row__book" data-service="${item.name}" data-staff="${serviceStaffNames(zoneKey, item).join(",")}" aria-label="Reservar ${item.name}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="5" width="18" height="16" rx="2"/>
               <path d="M8 3v4M16 3v4M3 10h18"/>
@@ -350,12 +350,12 @@ if (servicioSelect && empleadaSelect) {
   });
 
   // Al reservar desde una fila de servicio, deja visibles en "Empleada"
-  // solo a quienes tienen esa especialidad (o todas si no hay match claro).
-  function filterEmpleadaOptions(specialty) {
+  // solo a quienes hacen ese servicio en concreto (o todas si no hay match).
+  function filterEmpleadaOptions(allowedNames) {
+    const names = Array.isArray(allowedNames) ? allowedNames.filter(Boolean) : [];
     Array.from(empleadaSelect.options).forEach((opt) => {
       if (opt.value === "Sin preferencia") return;
-      const member = TEAM.find((m) => m.name === opt.value);
-      opt.hidden = Boolean(specialty) && member.specialty !== specialty;
+      opt.hidden = names.length > 0 && !names.includes(opt.value);
     });
     empleadaSelect.value = "Sin preferencia";
   }
@@ -365,7 +365,7 @@ if (servicioSelect && empleadaSelect) {
     if (!bookBtn) return;
 
     servicioSelect.value = bookBtn.dataset.service;
-    filterEmpleadaOptions(bookBtn.dataset.specialty);
+    filterEmpleadaOptions(bookBtn.dataset.staff ? bookBtn.dataset.staff.split(",") : []);
     document.getElementById("reservar").scrollIntoView({ behavior: "smooth" });
   });
 }
@@ -469,9 +469,8 @@ const SUPABASE_SERVICE_IDS = {
 
 const SUPABASE_STAFF_IDS = {
   "Irma": "cff0a909-6ba9-4d69-8ef1-41f2dbf3ecd4",
-  "Daniela": "7ac59f4d-60d7-421d-ba76-510d6bbffd29",
-  "Dori": "65a8cba1-8c0e-4f3b-9a9b-e78c8b93db57",
-  "Lina Rojas": "ba3ffaea-58d1-468b-82b5-f2a896a60d74",
+  "Mónica": "142b96c7-57a8-4b1c-8a2e-9946ecab32ba",
+  "Lina": "ba3ffaea-58d1-468b-82b5-f2a896a60d74",
 };
 
 // --------------------------------------------------------------------------
