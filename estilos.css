@@ -688,6 +688,13 @@ img { max-width: 100%; display: block; }
   color: var(--accent);
 }
 
+.form__hint {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  min-height: 1.1em;
+  margin: 0;
+}
+
 .form__row input,
 .form__row select {
   width: 100%;
@@ -705,6 +712,11 @@ img { max-width: 100%; display: block; }
 .form__row select:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+.form__row select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .booking__submit {

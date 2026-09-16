@@ -366,6 +366,7 @@ if (servicioSelect && empleadaSelect) {
 
     servicioSelect.value = bookBtn.dataset.service;
     filterEmpleadaOptions(bookBtn.dataset.staff ? bookBtn.dataset.staff.split(",") : []);
+    servicioSelect.dispatchEvent(new Event("change"));
     document.getElementById("reservar").scrollIntoView({ behavior: "smooth" });
   });
 }
@@ -481,6 +482,7 @@ const SUPABASE_STAFF_IDS = {
 // de las reservas aunque el email no llegue.
 // --------------------------------------------------------------------------
 const EDGE_FUNCTION_URL = "https://jjwvlggbzcdwcbuyeuky.supabase.co/functions/v1/crear-reserva";
+const HORARIOS_URL = "https://jjwvlggbzcdwcbuyeuky.supabase.co/functions/v1/horarios-disponibles";
 const SUPABASE_ANON_KEY = "sb_publishable_LKE15EUfevuLDiANK_LmHA_Y6darUox";
 
 const bookingForm = document.getElementById("bookingForm");
@@ -489,7 +491,15 @@ if (bookingForm) {
   const submitBtn = bookingForm.querySelector(".booking__submit");
   const statusEl = document.getElementById("bookingFormStatus");
   const whatsappFallback = document.getElementById("whatsappFallback");
+  const fechaInput = document.getElementById("fecha");
+  const horaSelect = document.getElementById("hora");
+  const horaHintEl = document.getElementById("horaHint");
   const originalBtnLabel = submitBtn.textContent;
+
+  // No se puede reservar en el pasado. El cierre real de cada día (domingo
+  // cerrado, sábado 10-15, resto 10-20) y el mínimo de 2h de antelación los
+  // aplica la Edge Function "horarios-disponibles" al calcular los huecos.
+  fechaInput.min = new Date().toLocaleDateString("en-CA");
 
   function setBookingStatus(message, type) {
     if (!statusEl) return;
@@ -497,6 +507,109 @@ if (bookingForm) {
     statusEl.classList.remove("is-error", "is-success");
     if (type) statusEl.classList.add(type);
   }
+
+  function setHoraHint(text) {
+    if (horaHintEl) horaHintEl.textContent = text || "";
+  }
+
+  function setHoraPlaceholder(text, disabled = true) {
+    horaSelect.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.disabled = true;
+    opt.selected = true;
+    opt.textContent = text;
+    horaSelect.appendChild(opt);
+    horaSelect.disabled = disabled;
+  }
+
+  let horariosRequestId = 0;
+
+  // Consulta la Edge Function "horarios-disponibles" y rellena el
+  // desplegable de "Hora" solo con los huecos realmente libres para la
+  // fecha, servicio y empleada elegidos (horario real del día, mínimo de
+  // 2h de antelación si es hoy, y sin solapes con citas ya confirmadas).
+  async function refreshHorarios() {
+    const fecha = fechaInput.value;
+    const servicioNombre = servicioSelect.value;
+    const empleadaNombre = empleadaSelect.value;
+    const service_id = SUPABASE_SERVICE_IDS[servicioNombre];
+    const staff_id = empleadaNombre && empleadaNombre !== "Sin preferencia"
+      ? SUPABASE_STAFF_IDS[empleadaNombre]
+      : null;
+
+    if (!fecha || !service_id) {
+      setHoraPlaceholder("Selecciona fecha y servicio");
+      setHoraHint("");
+      return;
+    }
+
+    const selectedDay = new Date(`${fecha}T00:00:00`).getDay();
+    if (selectedDay === 0) {
+      setHoraPlaceholder("Domingo: cerrado");
+      setHoraHint("Los domingos permanecemos cerradas. Elige otro día.");
+      return;
+    }
+
+    setHoraPlaceholder("Cargando horarios...");
+    setHoraHint("");
+
+    const requestId = ++horariosRequestId;
+
+    try {
+      const response = await fetch(HORARIOS_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({ fecha, service_id, staff_id }),
+      });
+
+      if (requestId !== horariosRequestId) return;
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setHoraPlaceholder("No se pudieron cargar los horarios");
+        setHoraHint("No se pudieron cargar los horarios, inténtalo de nuevo.");
+        return;
+      }
+
+      if (!data.slots || data.slots.length === 0) {
+        setHoraPlaceholder("Sin horarios disponibles");
+        setHoraHint(data.message || "No hay huecos disponibles este día, prueba con otra fecha o empleada.");
+        return;
+      }
+
+      horaSelect.innerHTML = "";
+      const placeholderOpt = document.createElement("option");
+      placeholderOpt.value = "";
+      placeholderOpt.disabled = true;
+      placeholderOpt.selected = true;
+      placeholderOpt.textContent = "Selecciona una hora";
+      horaSelect.appendChild(placeholderOpt);
+
+      data.slots.forEach((slot) => {
+        const opt = document.createElement("option");
+        opt.value = slot;
+        opt.textContent = slot;
+        horaSelect.appendChild(opt);
+      });
+
+      horaSelect.disabled = false;
+      setHoraHint("");
+    } catch (err) {
+      if (requestId !== horariosRequestId) return;
+      setHoraPlaceholder("No se pudieron cargar los horarios");
+      setHoraHint("No se pudieron cargar los horarios, inténtalo de nuevo.");
+    }
+  }
+
+  fechaInput.addEventListener("change", refreshHorarios);
+  servicioSelect.addEventListener("change", refreshHorarios);
+  empleadaSelect.addEventListener("change", refreshHorarios);
 
   function buildWhatsAppMessage() {
     const nombre = document.getElementById("nombre").value.trim();
@@ -545,6 +658,11 @@ if (bookingForm) {
       return;
     }
 
+    if (!hora) {
+      setBookingStatus("Selecciona una hora disponible antes de reservar", "is-error");
+      return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = "Enviando...";
     setBookingStatus("", null);
@@ -566,8 +684,11 @@ if (bookingForm) {
         setBookingStatus("¡Cita reservada!", "is-success");
         bookingForm.reset();
         empleadaSelect.value = "Sin preferencia";
+        setHoraPlaceholder("Selecciona fecha y servicio");
+        setHoraHint("");
       } else if (response.status === 409) {
         setBookingStatus("Esa hora ya no está disponible, elige otra", "is-error");
+        refreshHorarios();
       } else {
         setBookingStatus("No se pudo enviar, inténtalo de nuevo o escríbenos por WhatsApp", "is-error");
       }
