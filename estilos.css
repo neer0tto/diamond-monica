@@ -1218,3 +1218,15 @@ img { max-width: 100%; display: block; }
   color: var(--text-soft);
 }
 
+/* ==========================================================================
+   WIDGET DE BOOKSY — el propio script de Booksy inserta un botón/enlace al
+   final de la página (bloque estático, no flotante) con su estilo verde de
+   marca, que no combina con la paleta del sitio. Se oculta porque nuestros
+   propios botones "Reservar" ya abren el mismo popup (ver script.js);
+   !important porque el CSS de Booksy se inyecta de forma asíncrona después
+   del nuestro y podría ganar el empate de especificidad si no se fuerza.
+   ========================================================================== */
+.booksy-widget-container {
+  display: none !important;
+}
+

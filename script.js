@@ -479,6 +479,37 @@ if (reviewsBadge) {
 }
 
 // --------------------------------------------------------------------------
+// Widget de Booksy: nuestros botones "Reservar" abren el widget oficial en
+// una ventana modal (en vez de navegar a otra pestaña) simulando un clic en
+// el botón que el propio script de Booksy inserta al final de la página
+// (oculto con CSS, ver .booksy-widget-container). Booksy no expone una
+// función pública tipo window.Booksy.open(); esta es una forma no oficial
+// de activar su mismo popup, así que si el script de Booksy no ha cargado
+// todavía (o un bloqueador de anuncios lo impide) no se encuentra su botón
+// y el enlace funciona igual que antes: abre la página de Booksy en una
+// pestaña nueva.
+// --------------------------------------------------------------------------
+function openBooksyWidget(event) {
+  const trigger = document.querySelector(".booksy-widget-button");
+  if (trigger) {
+    event.preventDefault();
+    trigger.click();
+  }
+}
+
+document.querySelectorAll(".js-booksy-open").forEach((el) => {
+  el.addEventListener("click", openBooksyWidget);
+});
+
+if (accordionEl) {
+  accordionEl.addEventListener("click", (event) => {
+    if (event.target.closest(".service-row__book")) {
+      openBooksyWidget(event);
+    }
+  });
+}
+
+// --------------------------------------------------------------------------
 // Año del footer
 // --------------------------------------------------------------------------
 document.getElementById("year").textContent = new Date().getFullYear();
